@@ -91,18 +91,12 @@ const AppHeader = () => {
     const renderMenu = (
         <Menu
             anchorEl={anchorEl}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
             id={menuId}
             keepMounted
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
             open={isMenuOpen}
             onClose={handleMenuClose}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
             <MenuItem onClick={handleMenuClose}>My account</MenuItem>
@@ -113,18 +107,12 @@ const AppHeader = () => {
     const renderMobileMenu = (
         <Menu
             anchorEl={mobileMoreAnchorEl}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
             id={mobileMenuId}
             keepMounted
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
             <MenuItem>
                 <p>Playlists</p>
@@ -154,7 +142,9 @@ const AppHeader = () => {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar
                 position="static"
-                color='primary'
+                sx={{
+                    backgroundColor: "#415161"
+                }}
             >
                 <Container >
                     <Toolbar>
