@@ -2,7 +2,7 @@
 import { AppBar, Container, Toolbar } from "@mui/material";
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
-import { useHasMounted } from "../utils/customHook";
+import { useHasMounted } from "../../utils/customHook";
 import Grid from '@mui/material/Grid';
 
 const AppFooter = () => {
