@@ -20,6 +20,7 @@ import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { deepOrange, deepPurple } from '@mui/material/colors';
 import Container from '@mui/material/Container';
+import Link from 'next/link';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -98,8 +99,15 @@ const AppHeader = () => {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <MenuItem >
+                <Link href={'/profile'} style={{
+                    color: "unset",
+                    textDecoration: "unset"
+                }}>
+                    Profile
+                </Link>
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose}>Log out</MenuItem>
         </Menu>
     );
 
@@ -180,11 +188,15 @@ const AppHeader = () => {
                                 display: { xs: 'none', md: 'flex' },
                                 gap: "20px",
                                 alignItems: "center",
-                                cursor: "pointer"
+                                cursor: "pointer",
+                                "> a": {
+                                    color: "unset",
+                                    textDecoration: "unset"
+                                }
                             }}>
-                            <span>Playlists</span>
-                            <span>Likes</span>
-                            <span>Upload</span>
+                            <Link href="/playlist">Playlists</Link>
+                            <Link href="/like">Likes</Link>
+                            <Link href="/upload">Upload</Link>
 
                             <IconButton
                                 size="large"
