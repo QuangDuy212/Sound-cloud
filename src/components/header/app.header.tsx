@@ -21,6 +21,7 @@ import Stack from '@mui/material/Stack';
 import { deepOrange, deepPurple } from '@mui/material/colors';
 import Container from '@mui/material/Container';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -64,6 +65,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const AppHeader = () => {
+    //STATE:
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
@@ -71,6 +73,11 @@ const AppHeader = () => {
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+    //LIBRARY:
+    const router = useRouter()
+
+
+    //FUNCTION:
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -88,7 +95,13 @@ const AppHeader = () => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
+    const handleRedirectHome = () => {
+        router.push('/');
+    }
+
     const menuId = 'primary-search-account-menu';
+
+    //STYLE FOR :
     const renderMenu = (
         <Menu
             anchorEl={anchorEl}
@@ -112,6 +125,7 @@ const AppHeader = () => {
     );
 
     const mobileMenuId = 'primary-search-account-menu-mobile';
+
     const renderMobileMenu = (
         <Menu
             anchorEl={mobileMoreAnchorEl}
@@ -169,7 +183,11 @@ const AppHeader = () => {
                             variant="h6"
                             noWrap
                             component="div"
-                            sx={{ display: { xs: 'none', sm: 'block' } }}
+                            sx={{
+                                display: { xs: 'none', sm: 'block' },
+                                cursor: "pointer",
+                            }}
+                            onClick={() => handleRedirectHome()}
                         >
                             SOUNDCLOUD
                         </Typography>
