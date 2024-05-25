@@ -21,7 +21,9 @@ const MainSlider = () => {
                     zIndex: 2,
                     minWidth: 30,
                     width: 35,
-                    transform: "translateY(-50%)"
+                    transform: "translateY(-50%)",
+                    color: "#333",
+                    border: "1px solid #333"
                 }}
             >
                 <ChevronRightIcon />
@@ -41,7 +43,9 @@ const MainSlider = () => {
                     zIndex: 2,
                     minWidth: 30,
                     width: 35,
-                    transform: "translateY(-50%)"
+                    transform: "translateY(-50%)",
+                    color: "#333",
+                    border: "1px solid #333"
                 }}
             >
                 <ChevronLeftIcon />
