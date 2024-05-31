@@ -7,12 +7,19 @@ import { Box, Button, Divider } from "@mui/material";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
-const MainSlider = () => {
+interface IProps {
+    data: ITrackTop[];
+    title: string;
+}
+
+const MainSlider = (props: IProps) => {
+    const { data, title } = props;
 
     const NextArrow = (props: any) => {
         return (
             <Button
-                variant="outlined"
+                color="inherit"
+                variant="contained"
                 onClick={props.onClick}
                 sx={{
                     position: "absolute",
@@ -22,8 +29,6 @@ const MainSlider = () => {
                     minWidth: 30,
                     width: 35,
                     transform: "translateY(-50%)",
-                    color: "#333",
-                    border: "1px solid #333"
                 }}
             >
                 <ChevronRightIcon />
@@ -34,7 +39,8 @@ const MainSlider = () => {
     const PrevArrow = (props: any) => {
         return (
             <Button
-                variant="outlined"
+                color="inherit"
+                variant="contained"
                 onClick={props.onClick}
                 sx={{
                     position: "absolute",
@@ -44,8 +50,6 @@ const MainSlider = () => {
                     minWidth: 30,
                     width: 35,
                     transform: "translateY(-50%)",
-                    color: "#333",
-                    border: "1px solid #333"
                 }}
             >
                 <ChevronLeftIcon />
@@ -64,9 +68,14 @@ const MainSlider = () => {
     return (
         <Box
             sx={{
-                margin: "0 50px",
-                ".image-song": {
-                    padding: "0 10px"
+                margin: "80px 50px 0",
+                ".track": {
+                    padding: "0 10px",
+                    "img": {
+                        height: 150,
+                        width: 150,
+                        objectFit: "contain"
+                    }
                 },
                 "h3": {
                     border: "1px solid #ccc",
@@ -75,26 +84,17 @@ const MainSlider = () => {
                 }
             }}
         >
-            <h2>Mutiple tracks</h2>
+            <h2>{title}</h2>
             <Slider {...settings}>
-                <div className="image-song">
-                    <h3>1</h3>
-                </div>
-                <div className="image-song">
-                    <h3>2</h3>
-                </div>
-                <div className="image-song">
-                    <h3>3</h3>
-                </div>
-                <div className="image-song">
-                    <h3>4</h3>
-                </div>
-                <div className="image-song">
-                    <h3>5</h3>
-                </div>
-                <div className="image-song">
-                    <h3>6</h3>
-                </div>
+                {data.map((item, index) => {
+                    return (
+                        <div className="track" key={item._id}>
+                            <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${item.imgUrl}`} />
+                            <h4>{item.title}</h4>
+                            <h5>{item.description}</h5>
+                        </div>
+                    )
+                })}
             </Slider>
             <Divider />
         </Box>
