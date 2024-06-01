@@ -49,10 +49,6 @@ export default async function HomePage() {
   })
 
 
-
-
-
-
   return (
     <Container>
       <MainSlider
