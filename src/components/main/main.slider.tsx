@@ -90,8 +90,10 @@ const MainSlider = (props: IProps) => {
                 {data.map((item, index) => {
                     return (
                         <div className="track" key={item._id}>
-                            <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${item.imgUrl}`} />
-                            <Link href={`track/${item._id}`}>
+                            <img
+                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${item.imgUrl}`}
+                            />
+                            <Link href={`track/${item._id}?audio=${item.trackUrl}`}>
                                 <h4>{item.title}</h4>
                             </Link>
                             <h5>{item.description}</h5>
