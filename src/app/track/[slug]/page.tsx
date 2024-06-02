@@ -10,7 +10,6 @@ const DetailTrackPage = (props: any) => {
 
     //LIBRARY: take params from url 
     const searchParams = useSearchParams();
-
     const search = searchParams.get('audio');
 
     return (
