@@ -10,12 +10,12 @@ const WaveTrack = () => {
     const searchParams = useSearchParams()
     const fileName = searchParams.get('audio');
     const containerRef = useRef<HTMLDivElement>(null);
-    const optionsMemo = useMemo(() => {
+    const optionsMemo = useMemo((): Omit<WaveSurferOptions, 'container'> => {
         return {
             waveColor: 'rgb(200, 0, 200)',
             progressColor: 'rgb(100, 0, 100)',
             url: `/api?audio=${fileName}`,
-            container: containerRef.current,
+            barWidth: 2,
         }
     }, []);
 
