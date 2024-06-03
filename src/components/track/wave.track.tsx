@@ -17,6 +17,31 @@ const WaveTrack = () => {
     const [time, setTime] = useState<string>("0:00");
     const [duration, setDuration] = useState<string>("0:00");
 
+    // fake data
+    const arrComments = [
+        {
+            id: 1,
+            avatar: "http://localhost:8000/images/chill1.png",
+            moment: 10,
+            user: "username 1",
+            content: "just a comment1"
+        },
+        {
+            id: 2,
+            avatar: "http://localhost:8000/images/chill1.png",
+            moment: 30,
+            user: "username 2",
+            content: "just a comment3"
+        },
+        {
+            id: 3,
+            avatar: "http://localhost:8000/images/chill1.png",
+            moment: 50,
+            user: "username 3",
+            content: "just a comment3"
+        },
+    ]
+
 
     const optionsMemo = useMemo((): Omit<WaveSurferOptions, 'container'> => {
         let gradient, progressGradient;
@@ -96,6 +121,12 @@ const WaveTrack = () => {
         return `${minutes}:${paddedSeconds}`
     }
 
+    //calc
+    const calLeft = (moment: number) => {
+        const hardCodeDuration = 199;
+        const percent = (moment / hardCodeDuration) * 100;
+        return `${percent}%`
+    }
     return (
         <div style={{ marginTop: 64 }} className="track">
             <div className="track-container" >
@@ -140,11 +171,24 @@ const WaveTrack = () => {
                                 backdropFilter: "brightness(0.5)"
                             }}
                         ></div>
-                        <div className="comments">
-                            <img
-                                style={{ height: 20, width: 20 }}
-                                src="https://i1.sndcdn.com/artworks-DkbWn6zyiw64Jv64-aJyDzA-t500x500.jpg"
-                            />
+                        <div className="comments" style={{ position: "relative" }}>
+                            {arrComments.map((item, index) => {
+                                return (
+                                    <img
+                                        style={{
+                                            height: 20,
+                                            width: 20,
+                                            position: "relative",
+                                            top: 71,
+                                            zIndex: 20,
+                                            left: calLeft(item.moment)
+                                        }}
+                                        src={item.avatar}
+                                        key={item.id}
+                                    />
+                                )
+                            })}
+
                         </div>
 
                     </div>
@@ -152,7 +196,7 @@ const WaveTrack = () => {
                 <div className="right"
                 >
                     <div className="right__content">
-                        <img src="https://i1.sndcdn.com/artworks-DkbWn6zyiw64Jv64-aJyDzA-t500x500.jpg" />
+                        <img src="https://i1.sndcdn.com/artworks-4uzPxyIN5YK7qzum-k7v73Q-t500x500.jpg" />
                     </div>
                 </div>
             </div>
