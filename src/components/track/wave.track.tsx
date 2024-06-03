@@ -4,6 +4,8 @@ import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { useSearchParams } from 'next/navigation';
 import { useWavesurfer } from "@/utils/customHook";
 import { WaveSurferOptions } from 'wavesurfer.js';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
 import './wave.scss';
 
 const WaveTrack = () => {
@@ -54,8 +56,8 @@ const WaveTrack = () => {
     // Initialize wavesurfer when the container mounts
     // or any of the props change
     useEffect(() => {
-        if (!wavesurfer) return
-        setIsPlaying(false)
+        if (!wavesurfer) return;
+        setIsPlaying(false);
 
         const hover = hoverRef.current!;
         const waveform = containerRef.current!;
@@ -70,6 +72,9 @@ const WaveTrack = () => {
             wavesurfer.on('timeupdate', (currentTime) => {
                 setTime(formatTime(currentTime));
             }),
+            wavesurfer.once('interaction', () => {
+                wavesurfer.play()
+            })
         ]
 
         return () => {
@@ -92,27 +97,66 @@ const WaveTrack = () => {
     }
 
     return (
-        <div style={{ marginTop: 100 }}>
-            <div ref={containerRef} className="wave-form-container">
-                <div className="time" >{time}</div>
-                <div className="duration" >{duration}</div>
-                <div ref={hoverRef} className="hover-wave"></div>
-                <div className="overlay"
-                    style={{
-                        position: "absolute",
-                        height: "30px",
-                        width: "100%",
-                        bottom: "0",
-                        background: "#ccc"
-                    }}
-                ></div>
+        <div style={{ marginTop: 64 }} className="track">
+            <div className="track-container" >
+                <div className="left">
+                    <div className="info">
+                        <div>
+                            <div className="playbtn"
+                                onClick={() => onPlayClick()}
+                            >
+                                {isPlaying === true ?
+                                    <PauseIcon
+                                        sx={{ fontSize: 30, color: "white" }}
+                                    />
+                                    :
+                                    <PlayArrowIcon
+                                        sx={{ fontSize: 30, color: "white" }}
+                                    />
+                                }
+                            </div>
+                        </div>
+                        <div className="info__container">
+                            <div className="info__container--name">
+                                Ổ Quỷ x Godzilla by DJ ATOM Mix
+                            </div>
+                            <div className="info__container--author"
+                            >
+                                Nguyen Hoang
+                            </div>
+                        </div>
+                    </div>
+                    <div ref={containerRef} className="wave-form-container">
+                        <div className="time" >{time}</div>
+                        <div className="duration" >{duration}</div>
+                        <div ref={hoverRef} className="hover-wave"></div>
+                        <div className="overlay"
+                            style={{
+                                position: "absolute",
+                                height: "30px",
+                                width: "100%",
+                                bottom: "0",
+                                // background: "#ccc"
+                                backdropFilter: "brightness(0.5)"
+                            }}
+                        ></div>
+                        <div className="comments">
+                            <img
+                                style={{ height: 20, width: 20 }}
+                                src="https://i1.sndcdn.com/artworks-DkbWn6zyiw64Jv64-aJyDzA-t500x500.jpg"
+                            />
+                        </div>
 
+                    </div>
+                </div>
+                <div className="right"
+                >
+                    <div className="right__content">
+                        <img src="https://i1.sndcdn.com/artworks-DkbWn6zyiw64Jv64-aJyDzA-t500x500.jpg" />
+                    </div>
+                </div>
             </div>
-            <button onClick={() => onPlayClick()}>
-                {isPlaying === true ? "Pause" : "Play"}
-            </button>
-        </div>
-
+        </div >
     )
 }
 
