@@ -2,6 +2,12 @@
     cursor    : pointer;
     position  : relative;
     margin-top: 100px;
+
+    &:hover {
+        #hover {
+            opacity: 1;
+        }
+    }
 }
 
 #hover {
@@ -18,9 +24,6 @@
     transition    : opacity 0.2s ease;
 }
 
-#waveform:hover #hover {
-    opacity: 1;
-}
 
 #time,
 #duration {
