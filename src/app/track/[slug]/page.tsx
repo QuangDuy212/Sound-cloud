@@ -2,6 +2,7 @@
 
 
 import WaveTrack from '@/components/track/wave.track';
+import Container from '@mui/material/Container';
 import { useSearchParams } from 'next/navigation'
 
 const DetailTrackPage = (props: any) => {
@@ -13,11 +14,11 @@ const DetailTrackPage = (props: any) => {
     const search = searchParams.get('audio');
 
     return (
-        <div>DetailTrackPage
+        <Container>
             <div>
                 <WaveTrack />
             </div>
-        </div>
+        </Container>
     )
 }
 export default DetailTrackPage;
