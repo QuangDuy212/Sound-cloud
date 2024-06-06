@@ -77,6 +77,7 @@ const AppHeader = () => {
     //LIBRARY:
     const router = useRouter();
     const { data: session } = useSession();
+    console.log(">>> check session: ", session);
 
 
     //FUNCTION:
@@ -122,7 +123,12 @@ const AppHeader = () => {
                     Profile
                 </Link>
             </MenuItem>
-            <MenuItem onClick={handleMenuClose}>Log out</MenuItem>
+            <MenuItem
+                onClick={() => {
+                    handleMobileMenuClose();
+                    signOut();
+                }}
+            >Log out</MenuItem>
         </Menu>
     );
 
@@ -237,8 +243,9 @@ const AppHeader = () => {
                                         </>
                                         :
                                         <>
-                                            <Link href="/api/auth/signin">Login</Link>
-                                            <Link href="/api/auth/signin">Sign up</Link>
+                                            <Link href="#"
+                                                onClick={() => signIn()}
+                                            >Login</Link>
                                         </>
                                 }
 
