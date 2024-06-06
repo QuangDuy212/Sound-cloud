@@ -5,22 +5,16 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import MainSlider from "@/components/main/main.slider";
-import { sendRequest } from "@/utils/api"
+import { sendRequest } from "@/utils/api";
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 
 export default async function HomePage() {
+  const session = await getServerSession(authOptions);
+  console.log(">>> check session : ", session);
 
-  // const res = await fetch("http://localhost:8000/api/v1/tracks/top", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({
-  //     category: 'CHILL',
-  //     limit: 10,
-  //   })
-  // })
-
+  //get session
   const chills = await sendRequest<IBackendRes<ITrackTop[]>>({
     url: "http://localhost:8000/api/v1/tracks/top",
     method: "POST",
