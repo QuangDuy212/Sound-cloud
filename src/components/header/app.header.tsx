@@ -22,6 +22,7 @@ import { deepOrange, deepPurple } from '@mui/material/colors';
 import Container from '@mui/material/Container';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -74,7 +75,8 @@ const AppHeader = () => {
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
     //LIBRARY:
-    const router = useRouter()
+    const router = useRouter();
+    const { data: session } = useSession();
 
 
     //FUNCTION:
@@ -214,21 +216,32 @@ const AppHeader = () => {
                                         textDecoration: "unset"
                                     }
                                 }}>
-                                <Link href="/playlist">Playlists</Link>
-                                <Link href="/like">Likes</Link>
-                                <Link href="/upload">Upload</Link>
+                                {
+                                    session ?
+                                        <>
+                                            <Link href="/playlist">Playlists</Link>
+                                            <Link href="/like">Likes</Link>
+                                            <Link href="/upload">Upload</Link>
 
-                                <IconButton
-                                    size="large"
-                                    edge="end"
-                                    aria-label="account of current user"
-                                    aria-controls={menuId}
-                                    aria-haspopup="true"
-                                    onClick={handleProfileMenuOpen}
-                                    color="inherit"
-                                >
-                                    <Avatar sx={{ bgcolor: deepOrange[500] }}>QD</Avatar>
-                                </IconButton>
+                                            <IconButton
+                                                size="large"
+                                                edge="end"
+                                                aria-label="account of current user"
+                                                aria-controls={menuId}
+                                                aria-haspopup="true"
+                                                onClick={handleProfileMenuOpen}
+                                                color="inherit"
+                                            >
+                                                <Avatar sx={{ bgcolor: deepOrange[500] }}>QD</Avatar>
+                                            </IconButton>
+                                        </>
+                                        :
+                                        <>
+                                            <Link href="/api/auth/signin">Login</Link>
+                                            <Link href="/api/auth/signin">Sign up</Link>
+                                        </>
+                                }
+
                             </Box>
                             <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                                 <IconButton
