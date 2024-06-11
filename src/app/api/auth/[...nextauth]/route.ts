@@ -77,7 +77,6 @@ export const authOptions: AuthOptions = {
                 token.refresh_token = user.refresh_token;
                 //@ts-ignore
                 token.user = user.user;
-                console.log(">>>> check token: ", token);
             }
             return token;
         },
