@@ -16,14 +16,11 @@ export const authOptions: AuthOptions = {
     callbacks: {
         jwt({ token, user, account, profile, trigger }) {
             if (trigger === 'signIn' && account?.provider === "github") {
-                //todo
-                token.address = 'quang duy'
+
             }
             return token;
         },
         session({ session, token, user }) {
-            //@ts-ignore
-            session.address = token.address;
             return session;
         }
     }
