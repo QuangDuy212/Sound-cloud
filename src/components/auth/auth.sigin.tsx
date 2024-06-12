@@ -12,7 +12,9 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useState } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const AuthSignIn = (props: any) => {
 
@@ -25,6 +27,9 @@ const AuthSignIn = (props: any) => {
 
     const [errorUsername, setErrorUsername] = useState<string>("");
     const [errorPassword, setErrorPassword] = useState<string>("");
+
+    const [openMessage, setOpenMessage] = useState<boolean>(false);
+    const [resMessage, setResMessage] = useState<string>("");
 
     //LIBRARY:
     const router = useRouter()
@@ -55,138 +60,160 @@ const AuthSignIn = (props: any) => {
         if (!res?.error) {
             router.push('/');
         } else {
-            alert(res.error);
+            setOpenMessage(true);
+            setResMessage(res.error)
+        }
+    }
+
+    const handleEnterToSubmit = (e: React.KeyboardEvent<HTMLElement>) => {
+        if (e.key === 'Enter') {
+            handleSubmit();
         }
     }
 
     return (
-        <Box
-            sx={{
-                // backgroundImage: "linear-gradient(to bottom, #ff9aef, #fedac1, #d5e1cf, #b7e6d9)",
-                // backgroundColor: "#b7e6d9",
-                // backgroundRepeat: "no-repeat"
-            }}
-        >
-            <Grid container
+        <>
+            <Box
                 sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "100vh"
+                    // backgroundImage: "linear-gradient(to bottom, #ff9aef, #fedac1, #d5e1cf, #b7e6d9)",
+                    // backgroundColor: "#b7e6d9",
+                    // backgroundRepeat: "no-repeat"
                 }}
             >
-                <Grid
-                    item
-                    xs={12}
-                    sm={8}
-                    md={5}
-                    lg={4}
+                <Grid container
                     sx={{
-                        boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: "100vh"
                     }}
                 >
-                    <div style={{ margin: "20px" }}>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={8}
+                        md={5}
+                        lg={4}
+                        sx={{
+                            boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
+                        }}
+                    >
+                        <div style={{ margin: "20px" }}>
 
-                        <Link
-                            href={'/'}
-                        >
-                            <ArrowBackIcon color='info' />
-                        </Link>
-                        <Box sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            flexDirection: "column",
-                            width: "100%"
-                        }}>
-
-                            <Avatar>
-                                <LockIcon />
-                            </Avatar>
-
-                            <Typography component="h1">
-                                Sign in
-                            </Typography>
-                        </Box>
-
-                        <TextField
-                            onChange={(event) => setUsername(event.target.value)}
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            label="Username"
-                            name="username"
-                            autoFocus
-                            error={isErrorUsername}
-                            helperText={errorUsername}
-                        />
-                        <TextField
-                            onChange={(event) => setPassword(event.target.value)}
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type={showPassword ? "text" : "password"}
-                            error={isErrorPassword}
-                            helperText={errorPassword}
-
-                            InputProps={{
-                                endAdornment: <InputAdornment position="end">
-                                    <IconButton onClick={() => setShowPassword(!showPassword)}>
-                                        {showPassword === false ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>,
-                            }}
-                        />
-                        <Button
-                            sx={{
-                                my: 3
-                            }}
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            onClick={handleSubmit}
-                        >
-                            Sign In
-                        </Button>
-                        <Divider>Or using</Divider>
-                        <Box
-                            sx={{
+                            <Link
+                                href={'/'}
+                            >
+                                <ArrowBackIcon color='info' />
+                            </Link>
+                            <Box sx={{
                                 display: "flex",
                                 justifyContent: "center",
-                                gap: "25px",
-                                mt: 3
-                            }}
-                        >
-                            <Avatar
-                                sx={{
-                                    cursor: "pointer",
-                                }}
-                                onClick={() => {
-                                    signIn("github");
-                                }}
-                            >
-                                <GitHubIcon titleAccess="Login with Github" />
-                            </Avatar>
+                                alignItems: "center",
+                                flexDirection: "column",
+                                width: "100%"
+                            }}>
 
-                            <Avatar
+                                <Avatar>
+                                    <LockIcon />
+                                </Avatar>
+
+                                <Typography component="h1">
+                                    Sign in
+                                </Typography>
+                            </Box>
+
+                            <TextField
+                                onChange={(event) => setUsername(event.target.value)}
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                label="Username"
+                                name="username"
+                                autoFocus
+                                error={isErrorUsername}
+                                helperText={errorUsername}
+                            />
+                            <TextField
+                                onChange={(event) => setPassword(event.target.value)}
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type={showPassword ? "text" : "password"}
+                                error={isErrorPassword}
+                                helperText={errorPassword}
+                                onKeyDown={(e) => handleEnterToSubmit(e)}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">
+                                        <IconButton onClick={() => setShowPassword(!showPassword)}>
+                                            {showPassword === false ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>,
+                                }}
+                            />
+                            <Button
                                 sx={{
-                                    cursor: "pointer",
+                                    my: 3
+                                }}
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                onClick={handleSubmit}
+                            >
+                                Sign In
+                            </Button>
+                            <Divider>Or using</Divider>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    gap: "25px",
+                                    mt: 3
                                 }}
                             >
-                                < GoogleIcon titleAccess="Login with Google" />
-                            </Avatar>
-                        </Box>
-                    </div>
+                                <Avatar
+                                    sx={{
+                                        cursor: "pointer",
+                                    }}
+                                    onClick={() => {
+                                        signIn("github");
+                                    }}
+                                >
+                                    <GitHubIcon titleAccess="Login with Github" />
+                                </Avatar>
+
+                                <Avatar
+                                    sx={{
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    < GoogleIcon titleAccess="Login with Google" />
+                                </Avatar>
+                            </Box>
+                        </div>
+                    </Grid>
                 </Grid>
-            </Grid>
 
-        </Box>
-
+                <Snackbar
+                    open={openMessage}
+                    // autoHideDuration={3000}
+                    anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                >
+                    <Alert
+                        severity="error"
+                        variant="standard"
+                        sx={{ width: '100%' }}
+                        onClose={() => setOpenMessage(false)}
+                    >
+                        {resMessage}
+                    </Alert>
+                </Snackbar>
+            </Box>
+        </>
     )
 }
 
