@@ -1,9 +1,14 @@
 
+import AuthSignIn from "@/components/auth/auth.sigin";
+
+
 const SignInPage = () => {
+
+
     return (
-        <div>
-            Sign in Page
-        </div>
+        <>
+            <AuthSignIn />
+        </>
     )
 }
 
