@@ -88,7 +88,10 @@ export const authOptions: AuthOptions = {
             }
             return session;
         }
-    }
+    },
+    // pages: {
+    //     signIn: "/auth/signin"
+    // }
 }
 
 

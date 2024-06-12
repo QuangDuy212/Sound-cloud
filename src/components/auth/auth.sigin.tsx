@@ -7,6 +7,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
+import { signIn } from "next-auth/react";
 
 import { useState } from "react";
 
@@ -142,6 +143,9 @@ const AuthSignIn = (props: any) => {
                             <Avatar
                                 sx={{
                                     cursor: "pointer",
+                                }}
+                                onClick={() => {
+                                    signIn("github");
                                 }}
                             >
                                 <GitHubIcon titleAccess="Login with Github" />
