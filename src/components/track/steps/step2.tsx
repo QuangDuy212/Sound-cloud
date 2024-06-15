@@ -12,6 +12,7 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import { sendRequest } from '@/utils/api';
 
 interface IProps {
     trackUpload: {
@@ -62,9 +63,7 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 
-const handleSubmitForm = () => {
-    console.log(">>> check info: ", info);
-}
+
 
 function InputFileUpload(props: IFileUpload) {
     //PROPS:
@@ -128,6 +127,9 @@ const Step2 = (props: IProps) => {
     //PROPS: 
     const { trackUpload } = props;
 
+    //LIBRARY
+    const { data: session } = useSession();
+
     const categories = [
         {
             value: 'CHILL',
@@ -152,6 +154,29 @@ const Step2 = (props: IProps) => {
         }
     }, [trackUpload])
 
+    const handleSubmitForm = async () => {
+        const res = await sendRequest<IBackendRes<ITrackTop[]>>({
+            url: "http://localhost:8000/api/v1/tracks",
+            method: "POST",
+            body: {
+                title: info.title,
+                description: info.description,
+                trackUrl: info.trackUrl,
+                imgUrl: info.imgUrl,
+                category: info.category,
+            },
+            headers: {
+                Authorization: `Bearer ${session?.access_token}`,
+            },
+        });
+
+        if (res.data) {
+            alert("create success")
+        }
+        else {
+            alert(res.message);
+        }
+    }
 
     return (
         <Box sx={{ flexGrow: 1 }}>
