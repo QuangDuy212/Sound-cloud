@@ -11,13 +11,20 @@ import './step2.scss';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 
+interface IProps {
+    trackUpload: {
+        fileName: string;
+        percent: number;
+    };
+}
+
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ width: '100%', mr: 1 }}>
                 <LinearProgress variant="determinate" {...props} />
             </Box>
-            <Box sx={{ minWidth: 35 }}>
+            <Box sx={{ minWidth: 0 }}>
                 <Typography variant="body2" color="text.secondary">{`${Math.round(
                     props.value,
                 )}%`}</Typography>
@@ -38,39 +45,40 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
-const categories = [
-    {
-        value: 'CHILL',
-        label: 'CHILL',
-    },
-    {
-        value: 'WORKOUT',
-        label: 'WORKOUT',
-    },
-    {
-        value: 'PARTY',
-        label: 'PARTY',
-    },
-];
 
-const Step2 = () => {
-    const [progress, setProgress] = useState(10);
+
+const Step2 = (props: IProps) => {
+    // STATE: 
+
+    //PROPS: 
+    const { trackUpload } = props;
+
+    const categories = [
+        {
+            value: 'CHILL',
+            label: 'CHILL',
+        },
+        {
+            value: 'WORKOUT',
+            label: 'WORKOUT',
+        },
+        {
+            value: 'PARTY',
+            label: 'PARTY',
+        },
+    ];
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-        }, 800);
-        return () => {
-            clearInterval(timer);
-        };
     }, [])
+
+
 
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Grid container >
                 <Grid item xs={12}>
-                    Upload track:
-                    <LinearProgressWithLabel value={progress} />
+                    {trackUpload.fileName} :
+                    <LinearProgressWithLabel value={trackUpload.percent} />
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={5} xl={5} >
                     <div className='left'>
