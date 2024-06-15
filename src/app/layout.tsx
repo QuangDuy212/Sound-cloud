@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import AppFooter from '@/components/footer/app.footer';
 import { SessionProvider } from "next-auth/react";
 import NextAuthWrapper from '@/lib/next.auth.wrapper';
+import { ToastProvider } from '@/utils/toast/useToast';
 
 export const metadata = {
   title: "Next.js Duy Nguyễn",
@@ -18,7 +19,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeRegistry>
           <NextAuthWrapper>
-            {children}
+            <ToastProvider>
+              {children}
+            </ToastProvider>
           </NextAuthWrapper>
         </ThemeRegistry>
       </body>
