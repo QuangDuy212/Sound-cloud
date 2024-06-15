@@ -10,11 +10,14 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import './step2.scss';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+import axios from 'axios';
+import { useSession } from 'next-auth/react';
 
 interface IProps {
     trackUpload: {
         fileName: string;
         percent: number;
+        uploadedTrackName: string;
     };
 }
 
@@ -24,6 +27,11 @@ interface INewTrack {
     trackUrl: string;
     imgUrl: string;
     category: string;
+}
+
+interface IFileUpload {
+    info: any;
+    setInfo: any;
 }
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
@@ -54,6 +62,59 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 
+const handleSubmitForm = () => {
+    console.log(">>> check info: ", info);
+}
+
+function InputFileUpload(props: IFileUpload) {
+    //PROPS:
+    const { setInfo, info } = props;
+    //LIBRARY: 
+    const { data: session } = useSession();
+    const handleUpload = async (image: any) => {
+        const formData = new FormData();
+        formData.append('fileUpload', image);
+        try {
+            const res = await axios.post("http://localhost:8000/api/v1/files/upload", formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${session?.access_token}`,
+                        target_type: "images",
+                    },
+                }
+            )
+
+            if (res) {
+                setInfo({
+                    ...info,
+                    imgUrl: res?.data?.data?.fileName,
+                })
+            }
+        } catch (error) {
+            //@ts-ignore
+            alert(error?.response?.data?.message);
+        }
+    }
+    return (
+        <Button
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            startIcon={<CloudUploadIcon />}
+            onChange={(e) => {
+                const event = e.target as HTMLInputElement;
+                if (event.files) {
+                    handleUpload(event.files[0]);
+                }
+            }}
+        >
+            Upload file
+            <VisuallyHiddenInput type="file" />
+        </Button>
+    );
+}
+
 
 const Step2 = (props: IProps) => {
     // STATE: 
@@ -83,8 +144,11 @@ const Step2 = (props: IProps) => {
     ];
 
     useEffect(() => {
-        if (trackUpload) {
-            console.log(">>> check trackupload: ", trackUpload);
+        if (trackUpload && trackUpload.uploadedTrackName) {
+            setInfo({
+                ...info,
+                trackUrl: trackUpload.uploadedTrackName,
+            })
         }
     }, [trackUpload])
 
@@ -93,24 +157,19 @@ const Step2 = (props: IProps) => {
         <Box sx={{ flexGrow: 1 }}>
             <Grid container >
                 <Grid item xs={12}>
-                    {trackUpload.fileName} :
+                    {trackUpload.fileName}
                     <LinearProgressWithLabel value={trackUpload.percent} />
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={5} xl={5} >
                     <div className='left'>
                         <div className="left__content">
-                            <img src="https://i1.sndcdn.com/artworks-4uzPxyIN5YK7qzum-k7v73Q-t500x500.jpg" />
+                            {info?.imgUrl &&
+                                <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`} />}
                         </div>
-                        <Button
-                            component="label"
-                            role={undefined}
-                            variant="contained"
-                            tabIndex={-1}
-                            startIcon={<CloudUploadIcon />}
-                        >
-                            Upload file
-                            <VisuallyHiddenInput type="file" />
-                        </Button>
+                        <InputFileUpload
+                            info={info}
+                            setInfo={setInfo}
+                        />
                     </div>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={7} xl={7}>
@@ -141,13 +200,12 @@ const Step2 = (props: IProps) => {
                             })}
                         />
                         <TextField
-
+                            required
                             select
                             label="Category"
-                            defaultValue="EUR"
-                            SelectProps={{
-                                native: true,
-                            }}
+                            // SelectProps={{
+                            //     native: true,
+                            // }}
                             helperText="Please select category"
                             variant="standard"
                             value={info?.category}
@@ -164,7 +222,9 @@ const Step2 = (props: IProps) => {
                         </TextField>
 
                     </Box>
-                    <Button variant="outlined" sx={{ marginLeft: "20px" }}>Save</Button>
+                    <Button variant="outlined" sx={{ marginLeft: "20px" }}
+                        onClick={() => handleSubmitForm()}
+                    >Save</Button>
                 </Grid>
             </Grid>
         </Box >
