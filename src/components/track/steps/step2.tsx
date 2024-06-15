@@ -18,6 +18,14 @@ interface IProps {
     };
 }
 
+interface INewTrack {
+    title: string;
+    description: string;
+    trackUrl: string;
+    imgUrl: string;
+    category: string;
+}
+
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -49,7 +57,13 @@ const VisuallyHiddenInput = styled('input')({
 
 const Step2 = (props: IProps) => {
     // STATE: 
-
+    const [info, setInfo] = useState<INewTrack>({
+        title: "",
+        description: "",
+        trackUrl: "",
+        imgUrl: "",
+        category: "",
+    });
     //PROPS: 
     const { trackUpload } = props;
 
@@ -69,8 +83,10 @@ const Step2 = (props: IProps) => {
     ];
 
     useEffect(() => {
-    }, [])
-
+        if (trackUpload) {
+            console.log(">>> check trackupload: ", trackUpload);
+        }
+    }, [trackUpload])
 
 
     return (
@@ -106,10 +122,26 @@ const Step2 = (props: IProps) => {
                         noValidate
                         autoComplete="off"
                     >
-                        <TextField id="standard-basic" label="Title" variant="standard" />
-                        <TextField id="standard-basic" label="Description" variant="standard" />
                         <TextField
-                            id="standard-select-currency-native"
+                            label="Title"
+                            variant="standard"
+                            value={info?.title}
+                            onChange={(e) => setInfo({
+                                ...info,
+                                title: e.target.value,
+                            })}
+                        />
+                        <TextField
+                            label="Description"
+                            variant="standard"
+                            value={info?.description}
+                            onChange={(e) => setInfo({
+                                ...info,
+                                description: e.target.value,
+                            })}
+                        />
+                        <TextField
+
                             select
                             label="Category"
                             defaultValue="EUR"
@@ -118,6 +150,11 @@ const Step2 = (props: IProps) => {
                             }}
                             helperText="Please select category"
                             variant="standard"
+                            value={info?.category}
+                            onChange={(e) => setInfo({
+                                ...info,
+                                category: e.target.value,
+                            })}
                         >
                             {categories.map((option) => (
                                 <option key={option.value} value={option.value}>
