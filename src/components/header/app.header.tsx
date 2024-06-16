@@ -116,7 +116,7 @@ const AppHeader = () => {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
             <MenuItem >
-                <Link href={'/profile'} style={{
+                <Link href={`/profile/${session?.user._id}`} style={{
                     color: "unset",
                     textDecoration: "unset"
                 }}>
