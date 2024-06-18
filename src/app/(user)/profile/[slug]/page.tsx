@@ -2,7 +2,7 @@
 import { sendRequest } from "@/utils/api";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import ProfileTrack from "@/components/track/profile.tracks";
+import ProfileTrack from "@/components/header/profile.tracks";
 import { Container } from "@mui/material";
 
 const ProfilePage = async ({ params }: { params: { slug: string } }) => {

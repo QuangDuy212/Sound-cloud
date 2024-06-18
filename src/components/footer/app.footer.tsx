@@ -5,13 +5,13 @@ import 'react-h5-audio-player/lib/styles.css';
 import { useHasMounted } from "../../utils/customHook";
 import Grid from '@mui/material/Grid';
 import { useContext } from "react";
-import { TrackContext } from "@/lib/track.wraper";
+import { TrackContext, useTrackContext } from "@/lib/track.wraper";
 
 const AppFooter = () => {
 
     const hasMounted = useHasMounted();
-    const { color, setColor } = useContext(TrackContext);
-    console.log(">>> check track: ", color);
+    const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
+    console.log(">>> check track: ", currentTrack);
 
     if (!hasMounted) return (<></>);
 
