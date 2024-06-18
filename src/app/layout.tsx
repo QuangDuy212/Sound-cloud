@@ -7,6 +7,7 @@ import AppFooter from '@/components/footer/app.footer';
 import { SessionProvider } from "next-auth/react";
 import NextAuthWrapper from '@/lib/next.auth.wrapper';
 import { ToastProvider } from '@/utils/toast/useToast';
+import { TrackContextProvider } from '@/lib/track.wraper';
 
 export const metadata = {
   title: "Next.js Duy Nguyễn",
@@ -20,7 +21,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeRegistry>
           <NextAuthWrapper>
             <ToastProvider>
-              {children}
+              <TrackContextProvider>
+                {children}
+              </TrackContextProvider>
             </ToastProvider>
           </NextAuthWrapper>
         </ThemeRegistry>
