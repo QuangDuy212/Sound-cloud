@@ -4,17 +4,29 @@ import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import { useHasMounted } from "../../utils/customHook";
 import Grid from '@mui/material/Grid';
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { TrackContext, useTrackContext } from "@/lib/track.wraper";
 
 const AppFooter = () => {
-
+    //LIBRARY:
+    const playerRef = useRef(null);
     const hasMounted = useHasMounted();
+
+    //CONTEXT API:
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
-    console.log(">>> check track: ", currentTrack);
+    // console.log(">>> check track: ", currentTrack);
 
     if (!hasMounted) return (<></>);
 
+    //@ts-ignore
+    if (currentTrack?.isPlaying) {
+        //@ts-ignore
+        playerRef?.current?.audio?.current.play();
+    } else {
+        //@ts-ignore
+        playerRef?.current?.audio?.current.pause();
+
+    }
     return (
         <>
             <AppBar position="fixed"
@@ -30,21 +42,24 @@ const AppFooter = () => {
                             }
                         }}>
                             <AudioPlayer
-                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/24H-1718437193005.mp3`}
+                                ref={playerRef}
+                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`}
                                 volume={0.5}
                                 style={{
                                     boxShadow: "unset",
                                     background: '#f2f2f2'
                                 }}
                                 layout="horizontal-reverse"
+                                onPlay={() => { setCurrentTrack({ ...currentTrack, isPlaying: true }) }}
+                                onPause={() => { setCurrentTrack({ ...currentTrack, isPlaying: false }) }}
                             />
                         </Grid>
                         <Grid item xs={2}>
                             <div className="info"
                                 style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}
                             >
-                                <div style={{ color: "#ccc", fontSize: "15px" }}>LyLy</div>
-                                <div style={{ color: "#333" }}>24H</div>
+                                <div style={{ color: "#ccc", fontSize: "15px" }}>{currentTrack?.description}</div>
+                                <div style={{ color: "#333" }}>{currentTrack?.title}</div>
                             </div>
                         </Grid>
                     </Grid>
