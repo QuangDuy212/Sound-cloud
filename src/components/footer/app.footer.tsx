@@ -4,7 +4,7 @@ import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import { useHasMounted } from "../../utils/customHook";
 import Grid from '@mui/material/Grid';
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { TrackContext, useTrackContext } from "@/lib/track.wraper";
 
 const AppFooter = () => {
@@ -17,17 +17,20 @@ const AppFooter = () => {
 
     // console.log(">>> check track: ", currentTrack);
 
+    useEffect(() => {
+        //@ts-ignore
+        if (currentTrack?.isPlaying) {
+            //@ts-ignore
+            playerRef?.current?.audio?.current.play();
+        } else {
+            //@ts-ignore
+            playerRef?.current?.audio?.current.pause();
+        }
+    }, []);
+
     if (!hasMounted) return (<></>);
 
-    //@ts-ignore
-    if (currentTrack?.isPlaying) {
-        //@ts-ignore
-        playerRef?.current?.audio?.current.play();
-    } else {
-        //@ts-ignore
-        playerRef?.current?.audio?.current.pause();
 
-    }
     return (
         <>
             <AppBar position="fixed"

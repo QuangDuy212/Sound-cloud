@@ -9,12 +9,17 @@ import PauseIcon from '@mui/icons-material/Pause';
 import './wave.scss';
 import { Tooltip } from "@mui/material";
 import { sendRequest } from "@/utils/api";
+import { useTrackContext } from "@/lib/track.wraper";
 
-const WaveTrack = () => {
+interface IProps {
+    track: ITrackTop | null;
+}
+
+const WaveTrack = (props: IProps) => {
+    const { track } = props;
     //params from link
     const searchParams = useSearchParams()
     const fileName = searchParams.get('audio');
-    const id = searchParams.get('id');
 
 
     const containerRef = useRef<HTMLDivElement>(null);
@@ -23,7 +28,10 @@ const WaveTrack = () => {
     //STATE: 
     const [time, setTime] = useState<string>("0:00");
     const [duration, setDuration] = useState<string>("0:00");
-    const [trackInfo, setTrackInfo] = useState<ITrackTop | null>(null);
+
+
+    //CONTEXT API:
+    const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
 
     // fake data
     const arrComments = [
@@ -87,18 +95,7 @@ const WaveTrack = () => {
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
     //METHOD: 
-    useEffect(() => {
-        const fetchData = async () => {
-            const res = await sendRequest<IBackendRes<ITrackTop>>({
-                url: `http://localhost:8000/api/v1/tracks/${id}`,
-                method: "GET",
-            });
-            if (res && res?.data) {
-                setTrackInfo(res?.data);
-            }
-        }
-        fetchData();
-    }, [id]);
+
 
     // Initialize wavesurfer when the container mounts
     // or any of the props change
@@ -127,7 +124,19 @@ const WaveTrack = () => {
         return () => {
             subscriptions.forEach((unsub) => unsub())
         }
-    }, [wavesurfer])
+    }, [wavesurfer]);
+
+    useEffect(() => {
+        if (wavesurfer && currentTrack.isPlaying) {
+            wavesurfer.pause();
+        }
+    }, [currentTrack]);
+
+    useEffect(() => {
+        if (track?._id && !currentTrack?._id) {
+            setCurrentTrack({ ...track, isPlaying: false })
+        }
+    }, [track]);
 
     // On play button click
     const onPlayClick = useCallback(() => {
@@ -156,7 +165,11 @@ const WaveTrack = () => {
                     <div className="info">
                         <div>
                             <div className="playbtn"
-                                onClick={() => onPlayClick()}
+                                onClick={() => {
+                                    onPlayClick();
+                                    if (track && wavesurfer)
+                                        setCurrentTrack({ ...track, isPlaying: false })
+                                }}
                             >
                                 {isPlaying === true ?
                                     <PauseIcon
@@ -171,11 +184,11 @@ const WaveTrack = () => {
                         </div>
                         <div className="info__container">
                             <div className="info__container--name">
-                                {trackInfo?.title}
+                                {track?.title}
                             </div>
                             <div className="info__container--author"
                             >
-                                {trackInfo?.description}
+                                {track?.description}
                             </div>
                         </div>
                     </div>
@@ -224,7 +237,7 @@ const WaveTrack = () => {
                 <div className="right"
                 >
                     <div className="right__content">
-                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${trackInfo?.imgUrl}`} />
+                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`} />
                     </div>
                 </div>
             </div>
