@@ -8,15 +8,22 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import './wave.scss';
 import { Tooltip } from "@mui/material";
+import { sendRequest } from "@/utils/api";
 
 const WaveTrack = () => {
+    //params from link
     const searchParams = useSearchParams()
     const fileName = searchParams.get('audio');
+    const id = searchParams.get('id');
+
+
     const containerRef = useRef<HTMLDivElement>(null);
     const hoverRef = useRef<HTMLDivElement>(null);
 
+    //STATE: 
     const [time, setTime] = useState<string>("0:00");
     const [duration, setDuration] = useState<string>("0:00");
+    const [trackInfo, setTrackInfo] = useState<ITrackTop | null>(null);
 
     // fake data
     const arrComments = [
@@ -78,6 +85,20 @@ const WaveTrack = () => {
     }, []);
     const wavesurfer = useWavesurfer(containerRef, optionsMemo);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
+    //METHOD: 
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await sendRequest<IBackendRes<ITrackTop>>({
+                url: `http://localhost:8000/api/v1/tracks/${id}`,
+                method: "GET",
+            });
+            if (res && res?.data) {
+                setTrackInfo(res?.data);
+            }
+        }
+        fetchData();
+    }, [id]);
 
     // Initialize wavesurfer when the container mounts
     // or any of the props change
@@ -150,11 +171,11 @@ const WaveTrack = () => {
                         </div>
                         <div className="info__container">
                             <div className="info__container--name">
-                                Ổ Quỷ x Godzilla by DJ ATOM Mix
+                                {trackInfo?.title}
                             </div>
                             <div className="info__container--author"
                             >
-                                Nguyen Hoang
+                                {trackInfo?.description}
                             </div>
                         </div>
                     </div>
@@ -175,7 +196,7 @@ const WaveTrack = () => {
                         <div className="comments" style={{ position: "relative" }}>
                             {arrComments.map((item, index) => {
                                 return (
-                                    <Tooltip title={item.content} arrow>
+                                    <Tooltip title={item.content} arrow key={item.id}>
                                         <img
                                             onPointerMove={(e) => {
                                                 const hover = hoverRef.current!;
@@ -203,7 +224,7 @@ const WaveTrack = () => {
                 <div className="right"
                 >
                     <div className="right__content">
-                        <img src="https://i1.sndcdn.com/artworks-4uzPxyIN5YK7qzum-k7v73Q-t500x500.jpg" />
+                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${trackInfo?.imgUrl}`} />
                     </div>
                 </div>
             </div>

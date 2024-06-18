@@ -8,12 +8,13 @@ import { useContext, useRef } from "react";
 import { TrackContext, useTrackContext } from "@/lib/track.wraper";
 
 const AppFooter = () => {
+    //CONTEXT API:
+    const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
+
     //LIBRARY:
     const playerRef = useRef(null);
     const hasMounted = useHasMounted();
 
-    //CONTEXT API:
-    const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
     // console.log(">>> check track: ", currentTrack);
 
     if (!hasMounted) return (<></>);

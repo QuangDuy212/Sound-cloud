@@ -12,6 +12,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import { useTrackContext } from '@/lib/track.wraper';
 import PauseIcon from '@mui/icons-material/Pause';
+import Link from 'next/link';
 interface IProps {
     data: {
         "_id": string;
@@ -36,17 +37,26 @@ interface IProps {
 }
 const ProfileTrack = (props: IProps) => {
     const theme = useTheme();
+    const { data } = props;
     //LIBRARY:
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
     return (
         <Card sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', }}>
                 <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography component="div" variant="h5">
-                        {props.data.title}
-                    </Typography>
+                    <Link
+                        href={`/track/${data._id}?audio=${data.trackUrl}&id=${data._id}`}
+                        style={{
+                            textDecoration: 'none',
+                            color: 'unset'
+                        }}
+                    >
+                        <Typography component="div" variant="h5">
+                            {data.title}
+                        </Typography>
+                    </Link>
                     <Typography variant="subtitle1" color="text.secondary" component="div">
-                        {props.data.description}
+                        {data.description}
                     </Typography>
                 </CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
@@ -54,21 +64,21 @@ const ProfileTrack = (props: IProps) => {
                         {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
                     </IconButton>
                     {
-                        (props.data._id !== currentTrack._id ||
-                            props.data._id === currentTrack._id && currentTrack.isPlaying === false
+                        (data._id !== currentTrack._id ||
+                            data._id === currentTrack._id && currentTrack.isPlaying === false
                         )
                         &&
                         <IconButton aria-label="play/pause"
-                            onClick={() => { setCurrentTrack({ ...props.data, isPlaying: true }) }}
+                            onClick={() => { setCurrentTrack({ ...data, isPlaying: true }) }}
                         >
                             <PlayArrowIcon sx={{ height: 38, width: 38 }} />
                         </IconButton>
                     }
                     {
-                        (props.data._id === currentTrack._id && currentTrack.isPlaying === true)
+                        (data._id === currentTrack._id && currentTrack.isPlaying === true)
                         &&
                         <IconButton aria-label="play/pause"
-                            onClick={() => { setCurrentTrack({ ...props.data, isPlaying: false }) }}
+                            onClick={() => { setCurrentTrack({ ...data, isPlaying: false }) }}
                         >
                             <PauseIcon sx={{ height: 38, width: 38 }} />
                         </IconButton>
@@ -81,7 +91,7 @@ const ProfileTrack = (props: IProps) => {
             <CardMedia
                 component="img"
                 sx={{ width: 151 }}
-                image={`http://localhost:8000/images/${[props.data.imgUrl]}`}
+                image={`http://localhost:8000/images/${[data.imgUrl]}`}
                 alt="Live from space album cover"
             />
         </Card>
