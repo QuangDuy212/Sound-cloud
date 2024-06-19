@@ -7,17 +7,19 @@ import { WaveSurferOptions } from 'wavesurfer.js';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import './wave.scss';
-import { Tooltip } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import { fetchDefaultImages, sendRequest } from "@/utils/api";
 import { useTrackContext } from "@/lib/track.wraper";
+import Grid from '@mui/material/Grid';
+import CommentTrack from "./comment.track";
 
 interface IProps {
     track: ITrackTop | null;
-    comment: ITrackComment[] | null;
+    comments: ITrackComment[] | null;
 }
 
 const WaveTrack = (props: IProps) => {
-    const { track, comment } = props;
+    const { track, comments } = props;
     //params from link
     const searchParams = useSearchParams()
     const fileName = searchParams.get('audio');
@@ -208,7 +210,7 @@ const WaveTrack = (props: IProps) => {
                             }}
                         ></div>
                         <div className="comments" style={{ position: "relative" }}>
-                            {comment?.map((item, index) => {
+                            {comments?.map((item, index) => {
                                 return (
                                     <Tooltip title={item.content} arrow key={item._id}>
                                         <img
@@ -244,6 +246,12 @@ const WaveTrack = (props: IProps) => {
                         }
                     </div>
                 </div>
+            </div>
+            <div className="comment" style={{ marginTop: "80px" }}>
+                <CommentTrack
+                    track={track}
+                    comments={comments}
+                />
             </div>
         </div >
     )

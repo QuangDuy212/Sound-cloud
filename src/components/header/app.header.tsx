@@ -78,7 +78,6 @@ const AppHeader = () => {
     //LIBRARY:
     const router = useRouter();
     const { data: session } = useSession();
-    console.log(">>> check session: ", session);
 
 
     //FUNCTION:

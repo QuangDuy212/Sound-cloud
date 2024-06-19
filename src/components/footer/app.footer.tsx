@@ -33,45 +33,49 @@ const AppFooter = () => {
 
     return (
         <>
-            <AppBar position="fixed"
-                sx={{ top: 'auto', bottom: 0, background: "#f2f2f2", marginTop: "50px" }}
-            >
-                <Container sx={{ display: "flex" }}>
-                    <Grid container
-                        alignItems="center"
+            {currentTrack._id &&
+                <div>
+                    <AppBar position="fixed"
+                        sx={{ top: 'auto', bottom: 0, background: "#f2f2f2", marginTop: "50px" }}
                     >
-                        <Grid item xs={10} sx={{
-                            ".rhap_main": {
-                                gap: "30px"
-                            }
-                        }}>
-                            <AudioPlayer
-                                ref={playerRef}
-                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`}
-                                volume={0.5}
-                                style={{
-                                    boxShadow: "unset",
-                                    background: '#f2f2f2'
-                                }}
-                                layout="horizontal-reverse"
-                                onPlay={() => { setCurrentTrack({ ...currentTrack, isPlaying: true }) }}
-                                onPause={() => { setCurrentTrack({ ...currentTrack, isPlaying: false }) }}
-                            />
-                        </Grid>
-                        <Grid item xs={2}>
-                            <div className="info"
-                                style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}
+                        <Container sx={{ display: "flex" }}>
+                            <Grid container
+                                alignItems="center"
                             >
-                                <div style={{ color: "#ccc", fontSize: "15px" }}>{currentTrack?.description}</div>
-                                <div style={{ color: "#333" }}>{currentTrack?.title}</div>
-                            </div>
-                        </Grid>
-                    </Grid>
+                                <Grid item xs={10} sx={{
+                                    ".rhap_main": {
+                                        gap: "30px"
+                                    }
+                                }}>
+                                    <AudioPlayer
+                                        ref={playerRef}
+                                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`}
+                                        volume={0.5}
+                                        style={{
+                                            boxShadow: "unset",
+                                            background: '#f2f2f2'
+                                        }}
+                                        layout="horizontal-reverse"
+                                        onPlay={() => { setCurrentTrack({ ...currentTrack, isPlaying: true }) }}
+                                        onPause={() => { setCurrentTrack({ ...currentTrack, isPlaying: false }) }}
+                                    />
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <div className="info"
+                                        style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}
+                                    >
+                                        <div style={{ color: "#ccc", fontSize: "15px" }}>{currentTrack?.description}</div>
+                                        <div style={{ color: "#333" }}>{currentTrack?.title}</div>
+                                    </div>
+                                </Grid>
+                            </Grid>
 
 
-                </Container>
-            </AppBar>
-            <Toolbar />
+                        </Container>
+                    </AppBar>
+                    <Toolbar />
+                </div>
+            }
         </>
     )
 }
