@@ -8,7 +8,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import './wave.scss';
 import { Tooltip } from "@mui/material";
-import { sendRequest } from "@/utils/api";
+import { fetchDefaultImages, sendRequest } from "@/utils/api";
 import { useTrackContext } from "@/lib/track.wraper";
 
 interface IProps {
@@ -225,7 +225,7 @@ const WaveTrack = (props: IProps) => {
                                                 left: calLeft(item.moment)
                                             }}
                                             // src={item.avatar}
-                                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`}
+                                            src={fetchDefaultImages(item?.user?.type)}
                                             key={item._id}
                                         />
                                     </Tooltip>
@@ -239,7 +239,9 @@ const WaveTrack = (props: IProps) => {
                 <div className="right"
                 >
                     <div className="right__content">
-                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`} />
+                        {track?.imgUrl &&
+                            <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`} />
+                        }
                     </div>
                 </div>
             </div>

@@ -23,6 +23,7 @@ import Container from '@mui/material/Container';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession, signIn, signOut } from "next-auth/react";
+import { fetchDefaultImages } from '@/utils/api';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -238,7 +239,14 @@ const AppHeader = () => {
                                                 onClick={handleProfileMenuOpen}
                                                 color="inherit"
                                             >
-                                                <Avatar sx={{ bgcolor: deepOrange[500] }}>QD</Avatar>
+                                                {/* <Avatar sx={{ bgcolor: deepOrange[500] }}>QD</Avatar> */}
+                                                <img
+                                                    src={fetchDefaultImages(session?.user?.type)}
+                                                    style={{
+                                                        height: 40, width: 40,
+                                                        cursor: "pointer"
+                                                    }}
+                                                />
                                             </IconButton>
                                         </>
                                         :
