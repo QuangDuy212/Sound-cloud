@@ -1,9 +1,11 @@
+'use client'
 import { fetchDefaultImages } from '@/utils/api';
 import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { useState } from 'react';
 
 interface IProps {
     track: ITrackTop | null;
@@ -12,7 +14,10 @@ interface IProps {
 
 const CommentTrack = (props: IProps) => {
     const { track, comments } = props;
-    dayjs.extend(relativeTime)
+    //STATE: 
+    const [yourComment, setYourComment] = useState<string>("");
+    //LIBRARY: 
+    dayjs.extend(relativeTime)// for time
     return (
         <>
 
@@ -24,7 +29,13 @@ const CommentTrack = (props: IProps) => {
                             noValidate
                             autoComplete="off"
                         >
-                            <TextField label="Comment" variant="standard" fullWidth />
+                            <TextField
+                                label="Comment"
+                                variant="standard"
+                                fullWidth
+                                value={yourComment}
+                                onChange={(e) => setYourComment(e.target.value)}
+                            />
                         </Box>
                     </Grid>
                     <Grid item xs={3}>
@@ -74,7 +85,7 @@ const CommentTrack = (props: IProps) => {
                                                         backgroundColor: "#f3f3f3",
                                                         padding: "1px 4px",
                                                         borderRadius: "100px"
-                                                    }}>{item?.createdAt}</span></div>
+                                                    }}>{dayjs(item?.createdAt).format("HH:mm")}</span></div>
                                             <div style={{
                                                 fontSize: "14px",
                                                 fontWeight: "100",
