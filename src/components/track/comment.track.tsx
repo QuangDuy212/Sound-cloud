@@ -8,14 +8,16 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { useSession } from 'next-auth/react';
 import { useRouter } from "next/navigation";
 import { useState } from 'react';
+import WaveSurfer from 'wavesurfer.js';
 
 interface IProps {
     track: ITrackTop | null;
     comments: ITrackComment[] | null;
+    wavesurfer: WaveSurfer;
 }
 
 const CommentTrack = (props: IProps) => {
-    const { track, comments } = props;
+    const { track, comments, wavesurfer } = props;
     //STATE: 
     const [yourComment, setYourComment] = useState<string>("");
     //LIBRARY: 
@@ -33,7 +35,7 @@ const CommentTrack = (props: IProps) => {
             },
             body: {
                 content: yourComment,
-                moment: 10,
+                moment: Math.round(wavesurfer?.getCurrentTime() ?? 0),
                 track: track?._id,
             },
         });
@@ -41,6 +43,21 @@ const CommentTrack = (props: IProps) => {
         if (res?.data) {
             setYourComment("");
             router.refresh();
+        }
+    }
+
+    const formatTime = (seconds: number) => {
+        const minutes = Math.floor(seconds / 60)
+        const secondsRemainder = Math.round(seconds) % 60
+        const paddedSeconds = `0${secondsRemainder}`.slice(-2)
+        return `${minutes}:${paddedSeconds}`
+    }
+
+    const handleJumpTrack = (moment: number) => {
+        if (wavesurfer) {
+            const duration = wavesurfer.getDuration();
+            wavesurfer.seekTo(moment / duration);
+            wavesurfer.play();
         }
     }
     return (
@@ -115,8 +132,11 @@ const CommentTrack = (props: IProps) => {
                                                         color: " #044dd2",
                                                         backgroundColor: "#f3f3f3",
                                                         padding: "1px 4px",
-                                                        borderRadius: "100px"
-                                                    }}>{dayjs(item?.createdAt).format("HH:mm")}</span></div>
+                                                        borderRadius: "100px",
+                                                        cursor: "pointer"
+                                                    }}
+                                                    onClick={() => handleJumpTrack(item?.moment)}
+                                                >{formatTime(item?.moment)}</span></div>
                                             <div style={{
                                                 fontSize: "14px",
                                                 fontWeight: "100",

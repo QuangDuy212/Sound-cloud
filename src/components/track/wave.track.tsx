@@ -157,7 +157,7 @@ const WaveTrack = (props: IProps) => {
 
     //calc
     const calLeft = (moment: number) => {
-        const hardCodeDuration = 199;
+        const hardCodeDuration = wavesurfer?.getDuration() ?? 0;
         const percent = (moment / hardCodeDuration) * 100;
         return `${percent}%`
     }
@@ -169,9 +169,10 @@ const WaveTrack = (props: IProps) => {
                         <div>
                             <div className="playbtn"
                                 onClick={() => {
-                                    onPlayClick();
-                                    if (track && wavesurfer)
+                                    if (track && wavesurfer) {
                                         setCurrentTrack({ ...track, isPlaying: false })
+                                        onPlayClick();
+                                    }
                                 }}
                             >
                                 {isPlaying === true ?
@@ -251,6 +252,7 @@ const WaveTrack = (props: IProps) => {
                 <CommentTrack
                     track={track}
                     comments={comments}
+                    wavesurfer={wavesurfer}
                 />
             </div>
         </div >

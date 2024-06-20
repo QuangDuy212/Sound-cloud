@@ -26,7 +26,7 @@ const AppFooter = () => {
             //@ts-ignore
             playerRef?.current?.audio?.current.pause();
         }
-    }, []);
+    }, [currentTrack]);
 
     if (!hasMounted) return (<></>);
 
@@ -38,7 +38,7 @@ const AppFooter = () => {
                     <AppBar position="fixed"
                         sx={{ top: 'auto', bottom: 0, background: "#f2f2f2", marginTop: "50px" }}
                     >
-                        <Container sx={{ display: "flex" }}>
+                        <Container sx={{ display: "flex" }} disableGutters>
                             <Grid container
                                 alignItems="center"
                             >
@@ -62,10 +62,33 @@ const AppFooter = () => {
                                 </Grid>
                                 <Grid item xs={2}>
                                     <div className="info"
-                                        style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            flexDirection: "column",
+                                            width: "220px",
+                                            textOverflow: "ellipsis",
+                                            whiteSpace: "nowrap",
+                                            overflow: "hidden"
+                                        }}
                                     >
-                                        <div style={{ color: "#ccc", fontSize: "15px" }}>{currentTrack?.description}</div>
-                                        <div style={{ color: "#333" }}>{currentTrack?.title}</div>
+                                        <div
+                                            title={currentTrack?.description}
+                                            style={{
+                                                color: "#ccc", fontSize: "15px",
+                                                textOverflow: "ellipsis",
+                                                whiteSpace: "nowrap",
+                                                overflow: "hidden"
+                                            }}>{currentTrack?.description}</div>
+                                        <div
+                                            title={currentTrack?.title}
+                                            style={{
+                                                color: "#333",
+                                                textOverflow: "ellipsis",
+                                                whiteSpace: "nowrap",
+                                                overflow: "hidden"
+                                            }}>{currentTrack?.title}</div>
                                     </div>
                                 </Grid>
                             </Grid>
