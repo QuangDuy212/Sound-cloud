@@ -12,6 +12,7 @@ import { fetchDefaultImages, sendRequest } from "@/utils/api";
 import { useTrackContext } from "@/lib/track.wraper";
 import Grid from '@mui/material/Grid';
 import CommentTrack from "./comment.track";
+import LikeTrack from "./like.track";
 
 interface IProps {
     track: ITrackTop | null;
@@ -248,7 +249,13 @@ const WaveTrack = (props: IProps) => {
                     </div>
                 </div>
             </div>
-            <div className="comment" style={{ marginTop: "80px" }}>
+
+            <div className="like-track" style={{ marginTop: "20px" }}>
+                <LikeTrack
+                    track={track}
+                />
+            </div>
+            <div className="comment" style={{ marginTop: "10px" }}>
                 <CommentTrack
                     track={track}
                     comments={comments}

@@ -1,5 +1,6 @@
 'use client'
 import { fetchDefaultImages, sendRequest } from '@/utils/api';
+import { useHasMounted } from '@/utils/customHook';
 import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -13,7 +14,7 @@ import WaveSurfer from 'wavesurfer.js';
 interface IProps {
     track: ITrackTop | null;
     comments: ITrackComment[] | null;
-    wavesurfer: WaveSurfer;
+    wavesurfer: WaveSurfer | null;
 }
 
 const CommentTrack = (props: IProps) => {
@@ -24,7 +25,7 @@ const CommentTrack = (props: IProps) => {
     dayjs.extend(relativeTime)// for time
     const { data: session } = useSession();
     const router = useRouter();
-
+    const hasMounted = useHasMounted();
     //METHOD: 
     const handleSubmit = async () => {
         const res = await sendRequest<IBackendRes<IAddTrackComment>>({
@@ -105,7 +106,8 @@ const CommentTrack = (props: IProps) => {
                                         display: "flex", height: "50px",
                                         justifyContent: "space-between",
                                         marginTop: "20px"
-                                    }}>
+                                    }}
+                                    key={item._id}>
                                     <div style={{ display: "flex", alignItems: "center" }}>
                                         {track &&
                                             <img
@@ -149,7 +151,7 @@ const CommentTrack = (props: IProps) => {
                                         style={{
                                             fontSize: "12px", color: "#ccc"
                                         }}>
-                                        {dayjs(item?.createdAt).fromNow()}
+                                        {hasMounted && dayjs(item?.createdAt).fromNow()}
                                     </div>
                                 </div>
                             )
