@@ -77,4 +77,16 @@ declare global {
         "createdAt": string;
         "updatedAt": string;
     }
+
+    interface IAddTrackComment {
+        "content": string;
+        "moment": number;
+        "user": string;
+        "track": string;
+        "isDeleted": boolean,
+        "_id": string;
+        "createdAt": string;
+        "updatedAt": string;
+        "__v": number;
+    }
 }

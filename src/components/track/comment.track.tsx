@@ -1,10 +1,12 @@
 'use client'
-import { fetchDefaultImages } from '@/utils/api';
+import { fetchDefaultImages, sendRequest } from '@/utils/api';
 import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { useSession } from 'next-auth/react';
+import { useRouter } from "next/navigation";
 import { useState } from 'react';
 
 interface IProps {
@@ -18,6 +20,29 @@ const CommentTrack = (props: IProps) => {
     const [yourComment, setYourComment] = useState<string>("");
     //LIBRARY: 
     dayjs.extend(relativeTime)// for time
+    const { data: session } = useSession();
+    const router = useRouter();
+
+    //METHOD: 
+    const handleSubmit = async () => {
+        const res = await sendRequest<IBackendRes<IAddTrackComment>>({
+            url: "http://localhost:8000/api/v1/comments",
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${session?.access_token}`
+            },
+            body: {
+                content: yourComment,
+                moment: 10,
+                track: track?._id,
+            },
+        });
+
+        if (res?.data) {
+            setYourComment("");
+            router.refresh();
+        }
+    }
     return (
         <>
 
@@ -35,6 +60,12 @@ const CommentTrack = (props: IProps) => {
                                 fullWidth
                                 value={yourComment}
                                 onChange={(e) => setYourComment(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        e.preventDefault();
+                                        handleSubmit();
+                                    }
+                                }}
                             />
                         </Box>
                     </Grid>
