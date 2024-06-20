@@ -89,4 +89,15 @@ declare global {
         "updatedAt": string;
         "__v": number;
     }
+
+    interface ITrackLike {
+        "_id": string;
+        "title": string;
+        "description": string;
+        "category": string;
+        "imgUrl": string;
+        "trackUrl": string;
+        "countLike": number;
+        "countPlay": number;
+    }
 }
