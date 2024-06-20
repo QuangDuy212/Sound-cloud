@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState, useMemo, useCallback } from "react";
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useWavesurfer } from "@/utils/customHook";
 import { WaveSurferOptions } from 'wavesurfer.js';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -20,19 +20,24 @@ interface IProps {
 }
 
 const WaveTrack = (props: IProps) => {
+    //PROPS: 
     const { track, comments } = props;
+
     //params from link
     const searchParams = useSearchParams()
     const fileName = searchParams.get('audio');
 
-
+    //REF: 
     const containerRef = useRef<HTMLDivElement>(null);
     const hoverRef = useRef<HTMLDivElement>(null);
+    const firstViewRef = useRef<boolean>(true);
 
     //STATE: 
     const [time, setTime] = useState<string>("0:00");
     const [duration, setDuration] = useState<string>("0:00");
 
+    //LIBRARY: 
+    const router = useRouter();
 
     //CONTEXT API:
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
@@ -149,6 +154,20 @@ const WaveTrack = (props: IProps) => {
         }
     }, [wavesurfer]);
 
+    const handleIncreaseView = async () => {
+        if (firstViewRef.current) {
+            await sendRequest<IBackendRes<IModelPaginate<ITrackLike>>>({
+                url: "http://localhost:8000/api/v1/tracks/increase-view",
+                method: "POST",
+                body: {
+                    trackId: track?._id,
+                }
+            });
+            router.refresh();
+            firstViewRef.current = false;
+        }
+    }
+
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60)
         const secondsRemainder = Math.round(seconds) % 60
@@ -173,6 +192,7 @@ const WaveTrack = (props: IProps) => {
                                     if (track && wavesurfer) {
                                         setCurrentTrack({ ...track, isPlaying: false })
                                         onPlayClick();
+                                        handleIncreaseView();
                                     }
                                 }}
                             >
