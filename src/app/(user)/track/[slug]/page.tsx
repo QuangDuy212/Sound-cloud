@@ -28,10 +28,14 @@ export async function generateMetadata(
     });
     return {
         title: res?.data?.title,
-        description: res?.data?.description
-        // openGraph: {
-        //   images: ['/some-specific-page-image.jpg', ...previousImages],
-        // },
+        description: res?.data?.description,
+        openGraph: {
+            title: 'Hỏi Dân IT',
+            description: 'Beyond Your Coding Skills',
+            type: 'website',
+            images: [`https://raw.githubusercontent.com/hoidanit/images-hosting/master/eric.png`],
+
+        },
     }
 }
 
