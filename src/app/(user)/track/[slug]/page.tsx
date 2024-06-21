@@ -2,7 +2,38 @@
 import WaveTrack from '@/components/track/wave.track';
 import { sendRequest } from '@/utils/api';
 import Container from '@mui/material/Container';
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation';
+import type { Metadata, ResolvingMetadata } from 'next'
+
+type Props = {
+    params: { slug: string }
+    searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export async function generateMetadata(
+    { params, searchParams }: Props,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+    // read route params
+    //const slug = params.slug
+
+    // fetch data
+    // const product = await fetch(`https://.../${slug}`).then((res) => res.json())
+
+    // optionally access and extend (rather than replace) parent metadata
+    //const previousImages = (await parent).openGraph?.images || []
+    const res = await sendRequest<IBackendRes<ITrackTop>>({
+        url: `http://localhost:8000/api/v1/tracks/${params.slug}`,
+        method: "GET",
+    });
+    return {
+        title: res?.data?.title,
+        description: res?.data?.description
+        // openGraph: {
+        //   images: ['/some-specific-page-image.jpg', ...previousImages],
+        // },
+    }
+}
 
 const DetailTrackPage = async (props: any) => {
     //PROPS:
