@@ -3,7 +3,7 @@ import WaveTrack from '@/components/track/wave.track';
 import { sendRequest } from '@/utils/api';
 import Container from '@mui/material/Container';
 import { useSearchParams } from 'next/navigation';
-import type { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata, ResolvingMetadata } from 'next';
 
 type Props = {
     params: { slug: string }
@@ -43,6 +43,7 @@ const DetailTrackPage = async (props: any) => {
     //PROPS:
     const { params } = props;
 
+    //LIBRARY:
     const res = await sendRequest<IBackendRes<ITrackTop>>({
         url: `http://localhost:8000/api/v1/tracks/${params.slug}`,
         method: "GET",
