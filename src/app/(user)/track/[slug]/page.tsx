@@ -22,8 +22,11 @@ export async function generateMetadata(
 
     // optionally access and extend (rather than replace) parent metadata
     //const previousImages = (await parent).openGraph?.images || []
+    const temp = params?.slug?.split(".html") ?? [];
+    const temp1 = (temp[0]?.split("-") ?? []) as string[];
+    const id = temp1[temp1.length - 1];
     const res = await sendRequest<IBackendRes<ITrackTop>>({
-        url: `http://localhost:8000/api/v1/tracks/${params.slug}`,
+        url: `http://localhost:8000/api/v1/tracks/${id}`,
         method: "GET",
     });
     return {
@@ -44,8 +47,14 @@ const DetailTrackPage = async (props: any) => {
     const { params } = props;
 
     //LIBRARY:
+
+    //METHODS: 
+    const temp = params?.slug?.split(".html") ?? [];
+    const temp1 = (temp[0]?.split("-") ?? []) as string[];
+    const id = temp1[temp1.length - 1];
+
     const res = await sendRequest<IBackendRes<ITrackTop>>({
-        url: `http://localhost:8000/api/v1/tracks/${params.slug}`,
+        url: `http://localhost:8000/api/v1/tracks/${id}`,
         method: "GET",
         nextOption: { cache: "no-store" }
     });
