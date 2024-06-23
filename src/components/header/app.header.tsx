@@ -24,6 +24,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession, signIn, signOut } from "next-auth/react";
 import { fetchDefaultImages } from '@/utils/api';
+import Image from 'next/image';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -239,12 +240,14 @@ const AppHeader = () => {
                                                 color="inherit"
                                             >
                                                 {/* <Avatar sx={{ bgcolor: deepOrange[500] }}>QD</Avatar> */}
-                                                <img
+                                                <Image
                                                     src={fetchDefaultImages(session?.user?.type)}
                                                     style={{
-                                                        height: 40, width: 40,
                                                         cursor: "pointer"
                                                     }}
+                                                    alt='avatar'
+                                                    width={40}
+                                                    height={40}
                                                 />
                                             </IconButton>
                                         </>

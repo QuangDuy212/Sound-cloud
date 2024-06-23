@@ -118,9 +118,6 @@ const MainSlider = (props: IProps) => {
                 {data.map((item, index) => {
                     return (
                         <div className="track" key={item._id} >
-                            {/* <img
-                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${item.imgUrl}`}
-                            /> */}
                             <div style={{ position: "relative", height: "175px", width: "100%" }}>
                                 <Image
                                     src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${item.imgUrl}`}

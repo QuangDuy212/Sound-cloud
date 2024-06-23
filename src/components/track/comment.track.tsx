@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import { useRouter } from "next/navigation";
 import { useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
@@ -90,9 +91,11 @@ const CommentTrack = (props: IProps) => {
                     <Grid item xs={3}>
                         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px" }}>
                             {track &&
-                                <img
+                                <Image
                                     src={fetchDefaultImages(track?.uploader?.type)}
-                                    style={{ width: "150px", height: "150px" }}
+                                    height={150}
+                                    width={150}
+                                    alt='avatar comment'
                                 />
                             }
                         </div>
@@ -110,9 +113,11 @@ const CommentTrack = (props: IProps) => {
                                     key={item._id}>
                                     <div style={{ display: "flex", alignItems: "center" }}>
                                         {track &&
-                                            <img
+                                            <Image
                                                 src={fetchDefaultImages(track?.uploader?.type)}
-                                                style={{ width: "40px", height: "40px", }}
+                                                width={40}
+                                                height={40}
+                                                alt='track uploader'
                                             />
                                         }
                                         <div

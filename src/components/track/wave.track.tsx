@@ -13,6 +13,7 @@ import { useTrackContext } from "@/lib/track.wraper";
 import Grid from '@mui/material/Grid';
 import CommentTrack from "./comment.track";
 import LikeTrack from "./like.track";
+import Image from "next/image";
 
 interface IProps {
     track: ITrackTop | null;
@@ -235,22 +236,23 @@ const WaveTrack = (props: IProps) => {
                             {comments?.map((item, index) => {
                                 return (
                                     <Tooltip title={item.content} arrow key={item._id}>
-                                        <img
+
+                                        <Image
                                             onPointerMove={(e) => {
                                                 const hover = hoverRef.current!;
                                                 hover.style.width = calLeft(item.moment + 3);
                                             }}
+                                            src={fetchDefaultImages(item?.user?.type)}
+                                            key={item._id}
+                                            width={20}
+                                            height={20}
                                             style={{
-                                                height: 20,
-                                                width: 20,
                                                 position: "relative",
                                                 top: 96,
                                                 zIndex: 20,
                                                 left: calLeft(item.moment)
                                             }}
-                                            // src={item.avatar}
-                                            src={fetchDefaultImages(item?.user?.type)}
-                                            key={item._id}
+                                            alt="avatar comment"
                                         />
                                     </Tooltip>
                                 )
@@ -264,7 +266,12 @@ const WaveTrack = (props: IProps) => {
                 >
                     <div className="right__content">
                         {track?.imgUrl &&
-                            <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`} />
+                            <Image
+                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`}
+                                alt="image track"
+                                width={300}
+                                height={300}
+                            />
                         }
                     </div>
                 </div>

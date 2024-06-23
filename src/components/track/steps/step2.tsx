@@ -14,6 +14,7 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { sendRequest } from '@/utils/api';
 import { useToast } from '@/utils/toast/useToast';
+import Image from 'next/image';
 
 interface IProps {
     trackUpload: {
@@ -196,7 +197,13 @@ const Step2 = (props: IProps) => {
                     <div className='left'>
                         <div className="left__content">
                             {info?.imgUrl &&
-                                <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`} />}
+                                <Image
+                                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`}
+                                    alt='track image'
+                                    width={300}
+                                    height={300}
+                                />
+                            }
                         </div>
                         <InputFileUpload
                             info={info}
