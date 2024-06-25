@@ -8,7 +8,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { ConnectingAirportsOutlined } from "@mui/icons-material";
 
 export const authOptions: AuthOptions = {
-    secret: process.env.NO_SECRET,
+    secret: process.env.NEXTAUTH_SECRET,
     // Configure one or more authentication providers
     providers: [
         CredentialsProvider({

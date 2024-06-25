@@ -1,4 +1,6 @@
-const PlayListPage = () => {
+const PlayListPage = async () => {
+
+    await new Promise(resolve => setTimeout(resolve, 3000))
     return (
         <>
             PlayList page
