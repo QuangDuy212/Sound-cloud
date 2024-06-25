@@ -8,6 +8,7 @@ import { SessionProvider } from "next-auth/react";
 import NextAuthWrapper from '@/lib/next.auth.wrapper';
 import { ToastProvider } from '@/utils/toast/useToast';
 import { TrackContextProvider } from '@/lib/track.wraper';
+import NProgressWrapper from '@/lib/nprogress.wrapper';
 
 export const metadata = {
   title: "Next.js Duy Nguyễn",
@@ -19,13 +20,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <ThemeRegistry>
-          <NextAuthWrapper>
-            <ToastProvider>
-              <TrackContextProvider>
-                {children}
-              </TrackContextProvider>
-            </ToastProvider>
-          </NextAuthWrapper>
+          <NProgressWrapper>
+            <NextAuthWrapper>
+              <ToastProvider>
+                <TrackContextProvider>
+                  {children}
+                </TrackContextProvider>
+              </ToastProvider>
+            </NextAuthWrapper>
+          </NProgressWrapper>
         </ThemeRegistry>
       </body>
     </html>

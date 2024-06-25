@@ -176,7 +176,8 @@ const AppHeader = () => {
                     position="fixed"
                     sx={{
                         backgroundColor: "#415161",
-                        top: 0
+                        top: 0,
+                        zIndex: 10
                     }}
                 >
                     <Container >
