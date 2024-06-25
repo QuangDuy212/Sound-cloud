@@ -4,7 +4,7 @@ import { sendRequest } from '@/utils/api';
 import Container from '@mui/material/Container';
 import { useSearchParams } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
-
+import { notFound } from 'next/navigation';
 type Props = {
     params: { slug: string }
     searchParams: { [key: string]: string | string[] | undefined }
@@ -69,7 +69,9 @@ const DetailTrackPage = async (props: any) => {
             sort: "-createdAt",
         }
     });
-
+    if (!res?.data || !comments?.data?.result) {
+        notFound();
+    }
     return (
         <Container>
             <div>

@@ -1,0 +1,227 @@
+$bg_main: #171718;
+
+.content_not_found {
+    position       : relative;
+    display        : flex;
+    flex-direction : column;
+    align-items    : center;
+    justify-content: center;
+    min-height     : 100vh;
+    width          : 100%;
+    background     : $bg_main;
+}
+
+.nFour {
+    fill: #4e49a0;
+}
+
+.st0 {
+    opacity: 0.41;
+    fill   : #585490;
+}
+
+.st1 {
+    fill: #585490;
+}
+
+.st2 {
+    fill: #2f2e41;
+}
+
+.st3 {
+    fill: #ffffff;
+}
+
+.st4 {
+    opacity: 0.3;
+    fill   : #7474e2;
+}
+
+/*--------------------
+      ERROR 404
+  ----------------------*/
+
+#content_404 {
+    display        : flex;
+    flex-direction : row;
+    align-items    : center;
+    justify-content: center;
+}
+
+/*NUMBER FOUR*/
+#number_four {
+    width : 130px;
+    margin: 0 1em;
+}
+
+/*NUMBER ZERO*/
+#NotFound {
+    width: 200px;
+}
+
+#circle_nf2 {
+    animation: animationBounce1 2s infinite ease-in-out;
+}
+
+@keyframes animationBounce1 {
+    0% {
+        transform       : scale(0.8);
+        transform-origin: center;
+    }
+
+    50% {
+        transform       : scale(1);
+        transform-origin: center;
+    }
+
+    100% {
+        transform       : scale(0.8);
+        transform-origin: center;
+    }
+}
+
+#circle_nf3 {
+    animation: animationBounce2 3s infinite ease-in-out;
+}
+
+@keyframes animationBounce2 {
+    0% {
+        transform       : scale(0.7);
+        transform-origin: center;
+    }
+
+    50% {
+        transform       : scale(1);
+        transform-origin: center;
+    }
+
+    100% {
+        transform       : scale(0.7);
+        transform-origin: center;
+    }
+}
+
+/*--------------------
+      Information for error
+  ----------------------*/
+.info_not_found {
+    display        : flex;
+    flex-direction : column;
+    align-items    : center;
+    justify-content: center;
+    margin-top     : 3em;
+}
+
+.info_not_found>p {
+    color         : white;
+    font-family   : "Raleway", sans-serif;
+    font-size     : 1.5em;
+    letter-spacing: 1px;
+}
+
+.info_not_found>a {
+    font-size: 1.4em;
+    color    : #6a6ad8 !important;
+}
+
+.info_not_found>a:hover,
+a:active {
+    text-decoration: underline !important;
+}
+
+.icon_info_not_found {
+    transform   : rotate(180deg) !important;
+    padding-left: 10px;
+}
+
+/*-------------
+  Responsive
+  -------------*/
+/*Extra small devices (portrait phones, less than 576px)*/
+@media only screen and (max-width: 576px) {
+    #content_questions {
+        margin-top   : 2.5em;
+        margin-bottom: 0;
+    }
+
+    .question_mark_1 {
+        left: 30%;
+    }
+
+    .question_mark_2 {
+        left: 44%;
+    }
+
+    .question_mark_3 {
+        left: 57%;
+    }
+
+    .question_mark_4 {
+        left: 68%;
+    }
+
+    /*--------------------
+      ERROR 404
+    ----------------------*/
+    /*NUMBER FOUR*/
+    #number_four {
+        width: 70px;
+    }
+
+    /*NUMBER ZERO*/
+    #NotFound {
+        width: 130px;
+    }
+
+    /*--------------------
+      Information for error
+    ----------------------*/
+    .info_not_found {
+        margin-top: 1em;
+    }
+
+    .info_not_found>p {
+        font-size: 1em;
+    }
+
+    .info_not_found>a {
+        font-size: 1em;
+    }
+}
+
+/*Small devices (landscape phones, 576px and up)*/
+@media (min-width: 576px) and (max-width: 767.98px) {
+    #content_questions {
+        margin-top   : -1em;
+        margin-bottom: 2em;
+    }
+
+    /*--------------------
+      ERROR 404
+    ----------------------*/
+    /*NUMBER FOUR*/
+    #number_four {
+        width: 70px;
+    }
+
+    /*NUMBER ZERO*/
+    #NotFound {
+        width: 130px;
+    }
+
+    /*--------------------
+      Information for error
+    ----------------------*/
+    .info_not_found {
+        margin-top   : 1em;
+        margin-bottom: 1em;
+    }
+
+    .info_not_found>p {
+        font-size: 1em;
+    }
+
+    .info_not_found>a {
+        font-size: 1em;
+    }
+}
