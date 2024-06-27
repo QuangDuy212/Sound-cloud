@@ -69,6 +69,9 @@ const DetailTrackPage = async (props: any) => {
             sort: "-createdAt",
         }
     });
+
+
+    await new Promise(resolve => setTimeout(resolve, 10000))
     if (!res?.data || !comments?.data?.result) {
         notFound();
     }
@@ -78,6 +81,7 @@ const DetailTrackPage = async (props: any) => {
                 <WaveTrack
                     track={res?.data ?? null}
                     comments={comments?.data?.result ?? null}
+                    countComments={comments?.data?.meta?.total}
                 />
             </div>
         </Container>

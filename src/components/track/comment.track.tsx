@@ -19,14 +19,22 @@ interface IProps {
 }
 
 const CommentTrack = (props: IProps) => {
+    //PROPS: 
     const { track, comments, wavesurfer } = props;
+
     //STATE: 
     const [yourComment, setYourComment] = useState<string>("");
+
     //LIBRARY: 
     dayjs.extend(relativeTime)// for time
     const { data: session } = useSession();
     const router = useRouter();
     const hasMounted = useHasMounted();
+    let isMobile = false;
+    if (typeof window !== "undefined") {
+        isMobile = window?.matchMedia("(max-width: 600px)")?.matches;// check mobile device
+    }
+
     //METHOD: 
     const handleSubmit = async () => {
         const res = await sendRequest<IBackendRes<IAddTrackComment>>({
@@ -88,20 +96,42 @@ const CommentTrack = (props: IProps) => {
                             />
                         </Box>
                     </Grid>
-                    <Grid item xs={3}>
-                        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px" }}>
-                            {track &&
-                                <Image
-                                    src={fetchDefaultImages(track?.uploader?.type)}
-                                    height={150}
-                                    width={150}
-                                    alt='avatar comment'
-                                />
-                            }
-                        </div>
-                        <div style={{ fontSize: "15px", textAlign: "center" }}>{track?.uploader?.email}</div>
+                    <Grid item xl={3} lg={3} md={12} sm={12} xs={12}>
+                        {!isMobile
+                            ?
+                            <>
+                                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px" }}>
+                                    {track &&
+                                        <Image
+                                            src={fetchDefaultImages(track?.uploader?.type)}
+                                            height={150}
+                                            width={150}
+                                            alt='avatar comment'
+                                        />
+                                    }
+                                </div>
+                                <div style={{ fontSize: "15px", textAlign: "center" }}>{track?.uploader?.email}</div>
+                            </>
+                            :
+                            <div style={{ display: "flex" }}>
+                                <div>
+                                    {track &&
+                                        <Image
+                                            src={fetchDefaultImages(track?.uploader?.type)}
+                                            height={72.4}
+                                            width={72.4}
+                                            alt='avatar comment'
+                                        />
+                                    }
+                                </div>
+                                <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", marginLeft: "10px" }}>
+                                    <div style={{ fontSize: "14px", color: "#333", fontWeight: "800" }}>{track?.uploader?.email}</div>
+                                    <div style={{ fontSize: "14px", color: "#333" }}>{track?.uploader?.name ?? "Người ẩn danh"}</div>
+                                </div>
+                            </div>
+                        }
                     </Grid>
-                    <Grid item xs={9}>
+                    <Grid item xl={9} lg={9} md={12} sm={12} xs={12}>
                         {comments?.map((item) => {
                             return (
                                 <div

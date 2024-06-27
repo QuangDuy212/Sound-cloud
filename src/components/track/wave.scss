@@ -120,3 +120,25 @@
         }
     }
 }
+
+.playbtn {
+    border-radius  : 50%;
+    background     : #000;
+    height         : 50px;
+    width          : 50px;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    cursor         : pointer;
+}
+
+.info-track-mobile::before {
+    content        : "\2219";
+    display        : flex;
+    flex-direction : row;
+    align-items    : center;
+    justify-content: center;
+    margin         : 0 4px;
+    width          : 3px;
+    height         : 5px;
+}
