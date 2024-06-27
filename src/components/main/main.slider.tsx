@@ -16,7 +16,13 @@ interface IProps {
 }
 
 const MainSlider = (props: IProps) => {
+    //PROPS:
     const { data, title } = props;
+
+    let isMobile = false;
+    if (typeof window !== "undefined") {
+        isMobile = window?.matchMedia("(max-width: 600px)")?.matches;// check mobile device
+    }
 
     const NextArrow = (props: any) => {
         return (
@@ -47,7 +53,7 @@ const MainSlider = (props: IProps) => {
                 onClick={props.onClick}
                 sx={{
                     position: "absolute",
-                    left: 0,
+                    left: -5,
                     top: "50%",
                     zIndex: 2,
                     minWidth: 30,
@@ -62,11 +68,11 @@ const MainSlider = (props: IProps) => {
     const settings: Settings = {
         dots: false,
         infinite: true,
-        speed: 500,
-        slidesToShow: 5,
-        slidesToScroll: 1,
-        nextArrow: <NextArrow />,
-        prevArrow: <PrevArrow />,
+        speed: 1000,
+        slidesToShow: 6,
+        slidesToScroll: 2,
+        nextArrow: !isMobile ? <NextArrow /> : <></>,
+        prevArrow: !isMobile ? <PrevArrow /> : <></>,
         responsive: [
             {
                 breakpoint: 1024,
@@ -80,7 +86,7 @@ const MainSlider = (props: IProps) => {
             {
                 breakpoint: 600,
                 settings: {
-                    slidesToShow: 2,
+                    slidesToShow: 3,
                     slidesToScroll: 2,
                     initialSlide: 2
                 }
@@ -94,31 +100,37 @@ const MainSlider = (props: IProps) => {
             }
         ]
     };
+
+    function TextAbstract(text: string, length: number) {
+        if (text == null) {
+            return "";
+        }
+        if (text.length <= length) {
+            return text;
+        }
+        text = text.substring(0, length);
+        const last = text.lastIndexOf(" ");
+        text = text.substring(0, last);
+        return text + "...";
+    }
+
     return (
         <Box
             sx={{
                 margin: "80px 50px 0",
-                ".track": {
-                    padding: "0 10px",
-                    "img": {
-                        height: 150,
-                        width: 150,
-                        objectFit: "contain"
-                    }
-                },
-                "h3": {
-                    border: "1px solid #ccc",
-                    padding: "20px",
-                    height: "200px",
-                }
             }}
         >
             <h2>{title}</h2>
             <Slider {...settings}>
                 {data.map((item, index) => {
                     return (
-                        <div className="track" key={item._id} >
-                            <div style={{ position: "relative", height: "175px", width: "100%" }}>
+                        <div className="track" key={item._id}
+                            style={{ width: "170px", marginLeft: "20px", display: "flex", justifyContent: "center", alignItems: "center" }} >
+                            <div
+                                style={{
+                                    position: "relative", height: "170px", width: "170px",
+                                    display: "flex", justifyContent: "center", alignItems: "center"
+                                }}>
                                 <Image
                                     src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${item.imgUrl}`}
                                     alt="track image"
@@ -128,14 +140,23 @@ const MainSlider = (props: IProps) => {
                                     fill
                                 />
                             </div>
-                            <Link href={`track/${convertSlugUrl(item.title)}-${item._id}.html?audio=${item.trackUrl}`}
-                                style={{
-                                    textDecoration: 'none',
-                                    color: 'unset'
-                                }}>
-                                <h4>{item.title}</h4>
-                            </Link>
-                            <h5>{item.description}</h5>
+                            <div style={{ width: "170px" }}>
+                                <Link href={`track/${convertSlugUrl(item.title)}-${item._id}.html?audio=${item.trackUrl}`}
+                                    style={{
+                                        textDecoration: 'none',
+                                        color: '#333',
+                                        fontSize: "14px",
+                                        width: "170px",
+                                        display: "block"
+                                    }}>
+                                    <div style={{ width: "170px" }}>{TextAbstract(item.title, 30)}</div>
+                                </Link>
+                            </div>
+                            <div style={{
+                                color: '#999',
+                                fontSize: "13px",
+                                width: "170px"
+                            }}>{TextAbstract(item.description, 30)}</div>
                         </div>
                     )
                 })}
