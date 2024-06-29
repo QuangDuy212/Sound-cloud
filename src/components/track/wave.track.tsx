@@ -181,6 +181,16 @@ const WaveTrack = (props: IProps) => {
                     trackId: track?._id,
                 }
             });
+
+            await sendRequest<IBackendRes<any>>({
+                url: `/api/revalidate`,
+                method: "POST",
+                queryParams: {
+                    tag: "track-by-id",
+                    secret: "DuySoundCloud" // fix in api/revalidate/route to protect secret
+                }
+            });
+
             router.refresh();
             firstViewRef.current = false;
         }

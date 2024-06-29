@@ -76,6 +76,16 @@ const LikeTrack = (props: IProps) => {
                 Authorization: `Bearer ${session?.access_token}`
             },
         });
+
+        await sendRequest<IBackendRes<any>>({
+            url: `/api/revalidate`,
+            method: "POST",
+            queryParams: {
+                tag: "track-by-id",
+                secret: "DuySoundCloud" // fix in api/revalidate/route to protect secret
+            }
+        });
+
         if (res?.data) {
             fetchData();
             router.refresh();
@@ -109,7 +119,8 @@ const LikeTrack = (props: IProps) => {
                             <PlayArrowIcon />{track?.countPlay}
                         </div>
                         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                            {trackLikes?.some(i => i._id === track?._id) ? <FavoriteIcon /> : <FavoriteBorderIcon />} {track?.countLike}
+                            {/* {trackLikes?.some(i => i._id === track?._id) ? <FavoriteIcon /> : <FavoriteBorderIcon />} {track?.countLike} */}
+                            <FavoriteIcon />{track?.countLike}
                         </div>
                     </div>
                 </div>

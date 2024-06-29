@@ -25,10 +25,13 @@ export async function generateMetadata(
     const temp = params?.slug?.split(".html") ?? [];
     const temp1 = (temp[0]?.split("-") ?? []) as string[];
     const id = temp1[temp1.length - 1];
+
     const res = await sendRequest<IBackendRes<ITrackTop>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${id}`,
         method: "GET",
     });
+
+
     return {
         title: res?.data?.title,
         description: res?.data?.description,
@@ -65,7 +68,10 @@ const DetailTrackPage = async (props: any) => {
     const res = await sendRequest<IBackendRes<ITrackTop>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${id}`,
         method: "GET",
-        // nextOption: { cache: "no-store" }
+        nextOption: {
+            // cache: "no-store" ,
+            next: { tags: ['track-by-id'] }
+        }
     });
 
     const comments = await sendRequest<IBackendRes<IModelPaginate<ITrackComment>>>({
@@ -79,11 +85,12 @@ const DetailTrackPage = async (props: any) => {
         }
     });
 
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    // await new Promise(resolve => setTimeout(resolve, 5000));
 
     if (!res?.data || !comments?.data?.result) {
         notFound();
     }
+
     return (
         <Container>
             <div>

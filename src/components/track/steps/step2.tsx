@@ -177,9 +177,19 @@ const Step2 = (props: IProps) => {
             },
         });
 
+
+
         if (res.data) {
             toast.success("Create success!");
             setValue(0);
+            await sendRequest<IBackendRes<any>>({
+                url: `/api/revalidate`,
+                method: "POST",
+                queryParams: {
+                    tag: "track-by-profile",
+                    secret: "DuySoundCloud" // fix in api/revalidate/route to protect secret
+                }
+            });
         }
         else {
             toast.error(res.message);

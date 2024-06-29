@@ -29,6 +29,7 @@ function CustomTabPanel(props: TabPanelProps) {
 }
 
 const UploadTabs = () => {
+    //STATE: 
     const [value, setValue] = React.useState(0);
     const [trackUpload, setTrackUpload] = React.useState({
         fileName: "",
@@ -36,6 +37,7 @@ const UploadTabs = () => {
         uploadedTrackName: ""
     })
 
+    //METHODS: 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };

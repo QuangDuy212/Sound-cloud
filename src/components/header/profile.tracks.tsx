@@ -37,10 +37,14 @@ interface IProps {
     }
 }
 const ProfileTrack = (props: IProps) => {
+
     const theme = useTheme();
     const { data } = props;
+
     //LIBRARY:
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
+
+
     return (
         <Card sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', }}>
