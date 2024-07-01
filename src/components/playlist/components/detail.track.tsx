@@ -15,7 +15,7 @@ const DetailATrack = (props: IProps) => {
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
 
     return (
-        <Box sx={{ display: "flex", width: "100%", justifyContent: "space-between" }}>
+        <Box sx={{ display: "flex", width: "100%", justifyContent: "space-between", flexWrap: "wrap" }}>
             <Typography sx={{ py: 2 }}>
                 <Link
                     style={{ textDecoration: "none", color: "unset" }}

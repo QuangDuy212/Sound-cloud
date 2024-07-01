@@ -77,16 +77,16 @@ const LikeTrack = (props: IProps) => {
             },
         });
 
-        await sendRequest<IBackendRes<any>>({
-            url: `/api/revalidate`,
-            method: "POST",
-            queryParams: {
-                tag: "track-by-id",
-                secret: "DuySoundCloud" // fix in api/revalidate/route to protect secret
-            }
-        });
 
         if (res?.data) {
+            await sendRequest<IBackendRes<any>>({
+                url: `/api/revalidate`,
+                method: "POST",
+                queryParams: {
+                    tag: "track-by-id",
+                    secret: "DuySoundCloud" // fix in api/revalidate/route to protect secret
+                }
+            });
             fetchData();
             router.refresh();
         }
