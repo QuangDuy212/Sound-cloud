@@ -9,6 +9,8 @@ import NextAuthWrapper from '@/lib/next.auth.wrapper';
 import { ToastProvider } from '@/utils/toast/useToast';
 import { TrackContextProvider } from '@/lib/track.wraper';
 import NProgressWrapper from '@/lib/nprogress.wrapper';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata = {
   title: "Next.js Duy Nguyễn",
@@ -30,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </NextAuthWrapper>
           </NProgressWrapper>
         </ThemeRegistry>
+        <ToastContainer />
       </body>
     </html>
   );

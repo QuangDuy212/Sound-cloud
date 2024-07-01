@@ -100,4 +100,43 @@ declare global {
         "countLike": number;
         "countPlay": number;
     }
+
+    interface IPlayList {
+        "_id": string;
+        "title": string;
+        "isPublic": boolean;
+        "user": string;
+        "tracks": [
+            {
+                "_id": string;
+                "title": string;
+                "description": string;
+                "category": string;
+                "imgUrl": string;
+                "trackUrl": string;
+                "countLike": number;
+                "countPlay": number;
+            }],
+        "isDeleted": false,
+        "createdAt": string;
+        "updatedAt": string;
+        "__v": number;
+    }
+    interface IPlayListDetail {
+        "_id": string;
+        "title": string;
+        "isPublic": boolean;
+        "user": {
+            "_id": string;
+            "email": string;
+            "name": string;
+            "role": string;
+            "type": string;
+        },
+        "tracks": [],
+        "isDeleted": false,
+        "createdAt": string;
+        "updatedAt": string;
+        "__v": number;
+    }
 }
