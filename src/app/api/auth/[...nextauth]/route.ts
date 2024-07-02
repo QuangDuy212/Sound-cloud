@@ -6,6 +6,7 @@ import { sendRequest } from "@/utils/api";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { ConnectingAirportsOutlined } from "@mui/icons-material";
+import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions: AuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
@@ -52,6 +53,10 @@ export const authOptions: AuthOptions = {
             clientSecret: process.env.GITHUB_SECRET!,
         }),
         // ...add more providers here
+        GoogleProvider({
+            clientId: process.env.GOOGLE_ID!,
+            clientSecret: process.env.GOOGLE_SECRET!,
+        }),
     ],
     callbacks: {
         async jwt({ token, user, account, profile, trigger }) {
