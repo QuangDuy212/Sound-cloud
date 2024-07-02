@@ -2,6 +2,10 @@ import MainPlaylist from "@/components/playlist/main.playlist";
 import { sendRequest } from "@/utils/api";
 import { Container } from "@mui/material";
 
+export const metadata = {
+    title: "Playlist SoundCloud",
+    description: "SoundCloud",
+}
 
 const PlayListPage = async () => {
 

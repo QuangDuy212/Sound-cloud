@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 export const metadata: Metadata = {
-    title: 'SoundCloud Like Page',
+    title: ' Like ',
     description: 'Like page',
 }
 

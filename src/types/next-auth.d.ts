@@ -16,6 +16,8 @@ declare module "next-auth/jwt" {
         access_token: string;
         refresh_token: string;
         user: IUser;
+        access_expire: number;
+        error: string;
     }
 }
 
