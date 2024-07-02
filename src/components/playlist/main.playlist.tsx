@@ -94,6 +94,7 @@ const MainPlayList = () => {
                                 {item?.tracks?.map(track => {
                                     return (
                                         <Fragment key={uuidv4()}>
+                                            <Divider sx={{ marginTop: "10px" }} />
                                             <DetailATrack track={track} />
                                         </Fragment>
                                     )

@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useState } from "react";
+import WaveSurfer from "wavesurfer.js";
 
 
 
@@ -29,9 +30,10 @@ export const TrackContextProvider = ({ children }: { children: React.ReactNode }
         "isPlaying": false,
     }
     const [currentTrack, setCurrentTrack] = useState<IShareTrack>(initValue);
+    const [wavesurferContext, setWavesurferContext] = useState<WaveSurfer | null>(null);
 
     return (
-        <TrackContext.Provider value={{ currentTrack, setCurrentTrack }}>
+        <TrackContext.Provider value={{ currentTrack, setCurrentTrack, wavesurferContext, setWavesurferContext }}>
             {children}
         </TrackContext.Provider>
     )
