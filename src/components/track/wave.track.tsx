@@ -147,7 +147,6 @@ const WaveTrack = (props: IProps) => {
         if (wavesurfer && currentTrack.isPlaying) {
             wavesurfer.pause();
         }
-
     }, [currentTrack]);
 
     useEffect(() => {
@@ -160,6 +159,8 @@ const WaveTrack = (props: IProps) => {
     const onPlayClick = useCallback(() => {
         if (wavesurfer) {
             wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
+            console.log(">>>> check currentTrack : ", currentTrack);
+            console.log(">>>> check track: ", track);
         }
     }, [wavesurfer]);
 
@@ -308,9 +309,9 @@ const WaveTrack = (props: IProps) => {
                             <div>
                                 <div className="playbtn"
                                     onClick={() => {
+                                        onPlayClick();
                                         if (track && wavesurfer) {
-                                            setCurrentTrack({ ...track, isPlaying: false })
-                                            onPlayClick();
+                                            setCurrentTrack({ ...currentTrack, isPlaying: false })
                                             handleIncreaseView();
                                         }
                                     }}

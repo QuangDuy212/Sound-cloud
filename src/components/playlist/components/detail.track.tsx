@@ -5,6 +5,7 @@ import Link from "next/link";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import Image from "next/image";
+import { useEffect } from "react";
 
 interface IProps {
     track: IShareTrack;
@@ -14,6 +15,9 @@ const DetailATrack = (props: IProps) => {
     const { track } = props;
 
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
+
+    useEffect(() => {
+    }, [currentTrack])
 
     return (
         <Box sx={{ display: "flex", width: "100%", justifyContent: "space-between", flexWrap: "wrap", marginTop: "10px" }}>

@@ -95,6 +95,7 @@ const MainPlayList = () => {
                                     return (
                                         <Fragment key={uuidv4()}>
                                             <Divider sx={{ marginTop: "10px" }} />
+                                            {/* @ts-ignore */}
                                             <DetailATrack track={track} />
                                         </Fragment>
                                     )

@@ -2,14 +2,9 @@
 import LikedTrack from '@/components/like/liked.track';
 import { sendRequest } from '@/utils/api';
 import { Box, Container, Divider } from '@mui/material';
-import type { Metadata } from 'next';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
-export const metadata: Metadata = {
-    title: ' Like ',
-    description: 'Like page',
-}
 
 
 const LikePage = () => {
@@ -19,6 +14,10 @@ const LikePage = () => {
     const { data: session } = useSession();
 
     useEffect(() => {
+        //@ts-ignore
+        if (session?.error === "RefreshAccessTokenError") {
+            signIn();
+        }
         fetchData();
     }, [session]);
 
