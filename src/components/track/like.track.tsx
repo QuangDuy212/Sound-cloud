@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CommentIcon from '@mui/icons-material/Comment';
+import { handleLikeTrackAction } from '@/utils/actions/actions';
 interface IProps {
     track: ITrackTop | null;
     countComments: number | undefined;
@@ -65,31 +66,14 @@ const LikeTrack = (props: IProps) => {
         }
     }
     const handleLikeTrack = async () => {
-        const res = await sendRequest<IBackendRes<ILike>>({
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
-            method: "POST",
-            body: {
-                track: track?._id,
-                quantity: trackLikes?.some(i => i._id === track?._id) ? -1 : 1,
-            },
-            headers: {
-                Authorization: `Bearer ${session?.access_token}`
-            },
-        });
 
-
-        if (res?.data) {
-            await sendRequest<IBackendRes<any>>({
-                url: `/api/revalidate`,
-                method: "POST",
-                queryParams: {
-                    tag: "track-by-id",
-                    secret: "DuySoundCloud" // fix in api/revalidate/route to protect secret
-                }
-            });
-            fetchData();
-            router.refresh();
+        const id = track?._id;
+        const quantity = trackLikes?.some(i => i._id === track?._id) ? -1 : 1;
+        if (id && quantity) {
+            await handleLikeTrackAction(id, quantity);
         }
+        fetchData();
+        router.refresh();
     };
 
     return (
