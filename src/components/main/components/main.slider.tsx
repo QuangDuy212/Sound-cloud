@@ -9,20 +9,25 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Link from "next/link";
 import { convertSlugUrl } from "@/utils/api";
 import Image from "next/image";
+import { useRouter } from 'next/navigation'
 
 interface IProps {
     data: ITrackTop[];
     title: string;
+    category: string;
 }
 
 const MainSlider = (props: IProps) => {
     //PROPS:
-    const { data, title } = props;
+    const { data, title, category } = props;
 
+    //LIBRARY: 
     let isMobile = false;
     if (typeof window !== "undefined") {
         isMobile = window?.matchMedia("(max-width: 600px)")?.matches;// check mobile device
     }
+
+    const router = useRouter()
 
     const NextArrow = (props: any) => {
         return (
@@ -70,7 +75,7 @@ const MainSlider = (props: IProps) => {
         infinite: true,
         speed: 1000,
         slidesToShow: 6,
-        slidesToScroll: 2,
+        slidesToScroll: 5,
         nextArrow: !isMobile ? <NextArrow /> : <></>,
         prevArrow: !isMobile ? <PrevArrow /> : <></>,
         responsive: [
@@ -117,10 +122,13 @@ const MainSlider = (props: IProps) => {
     return (
         <Box
             sx={{
-                margin: "80px 50px 0",
+                margin: "40px 50px 0",
             }}
         >
-            <h2>{title}</h2>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "15px", alignItems: "center" }}>
+                <div style={{ fontSize: "24px", fontWeight: 800 }}>{title}</div>
+                <Button onClick={() => router.push(`category/${category}`)}>See more</Button>
+            </div>
             <Slider {...settings}>
                 {data.map((item, index) => {
                     return (
@@ -135,9 +143,11 @@ const MainSlider = (props: IProps) => {
                                     src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${item.imgUrl}`}
                                     alt="track image"
                                     style={{
-                                        objectFit: "contain"
+                                        objectFit: "contain",
+                                        cursor: "pointer"
                                     }}
                                     fill
+                                    onClick={() => router.push(`track/${convertSlugUrl(item.title)}-${item._id}.html?audio=${item.trackUrl}`)}
                                 />
                             </div>
                             <div style={{ width: "170px" }}>
@@ -161,8 +171,8 @@ const MainSlider = (props: IProps) => {
                     )
                 })}
             </Slider>
-            <Divider />
-        </Box>
+            <Divider sx={{ marginTop: "40px" }} />
+        </Box >
     );
 }
 

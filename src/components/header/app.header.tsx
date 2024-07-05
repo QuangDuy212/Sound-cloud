@@ -100,7 +100,8 @@ const AppHeader = () => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
-    const handleRedirectHome = () => {
+    const handleRedirectHome = (e: any) => {
+        e.preventDefault();
         router.push('/');
     }
 
@@ -118,10 +119,13 @@ const AppHeader = () => {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
             <MenuItem >
-                <Link href={`/profile/${session?.user._id}`} style={{
-                    color: "unset",
-                    textDecoration: "unset"
-                }}>
+                <Link href={`/profile/${session?.user._id}`}
+                    style={{
+                        color: "unset",
+                        textDecoration: "unset"
+                    }}
+
+                >
                     Profile
                 </Link>
             </MenuItem>
@@ -205,7 +209,7 @@ const AppHeader = () => {
                                     display: { xs: 'none', sm: 'block' },
                                     cursor: "pointer",
                                 }}
-                                onClick={() => handleRedirectHome()}
+                                onClick={(e) => handleRedirectHome(e)}
                             >
                                 SOUNDCLOUD
                             </Typography>

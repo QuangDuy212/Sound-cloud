@@ -60,6 +60,8 @@ declare global {
         setCurrentTrack: (v: IShareTrack) => void;
         wavesurferContext: WaveSurfer | null;
         setWavesurferContext: (v: WaveSurfer) => void;
+        currentTimeContext: number;
+        setCurrentTimeContext: (v: number) => void;
     }
 
     interface ITrackComment {

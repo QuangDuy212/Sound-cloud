@@ -48,7 +48,7 @@ const WaveTrack = (props: IProps) => {
     }
 
     //CONTEXT API:
-    const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
+    const { currentTrack, setCurrentTrack, wavesurferContext, setWavesurferContext, setCurrentTimeContext, currentTimeContext } = useTrackContext() as ITrackContext;
 
     // fake data
     const arrComments = [
@@ -133,6 +133,13 @@ const WaveTrack = (props: IProps) => {
             wavesurfer.on('timeupdate', (currentTime) => {
                 setTime(formatTime(currentTime));
             }),
+            wavesurfer.on('seeking', (currentTime) => {
+                setIsPlaying(true);
+                wavesurfer.setMuted(true);
+                setCurrentTimeContext(currentTime);
+                if (track)
+                    setCurrentTrack({ ...track, isPlaying: true });
+            }),
             wavesurfer.once('interaction', () => {
                 wavesurfer.play()
             })
@@ -143,9 +150,19 @@ const WaveTrack = (props: IProps) => {
         }
     }, [wavesurfer]);
 
+    // useEffect(() => {
+    //     if (wavesurfer && currentTrack.isPlaying) {
+    //         wavesurfer.pause();
+    //     }
+    // }, [currentTrack]);
+
     useEffect(() => {
-        if (wavesurfer && currentTrack.isPlaying) {
-            wavesurfer.pause();
+        // if (wavesurfer && track?._id !== currentTrack?._id) {
+        //     wavesurfer.pause();
+        //     wavesurfer.setTime(0);
+        // }
+        if (wavesurfer && track?._id === currentTrack?._id && currentTrack?.isPlaying) {
+            wavesurfer.play();
         }
     }, [currentTrack]);
 
@@ -156,12 +173,25 @@ const WaveTrack = (props: IProps) => {
     }, [track]);
 
     // On play button click
+    // const onPlayClick = useCallback(() => {
+    //     if (wavesurfer) {
+    //         wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
+    //         console.log(">>>> check currentTrack : ", currentTrack);
+    //         console.log(">>>> check track: ", track);
+    //     }
+
+    // }, [wavesurfer]);
+
     const onPlayClick = useCallback(() => {
         if (wavesurfer) {
             wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
-            console.log(">>>> check currentTrack : ", currentTrack);
-            console.log(">>>> check track: ", track);
+            setWavesurferContext(wavesurfer);
+            wavesurfer.setMuted(true)
         }
+        // if (track?._id && !currentTrack?._id) {
+        //     setCurrentTrack({ ...track, isPlaying: false })
+        //     console.log(">>> check 2");
+        // }
     }, [wavesurfer]);
 
     const handleClickOnMobile = () => {
@@ -307,7 +337,44 @@ const WaveTrack = (props: IProps) => {
                     <div className="left">
                         <div className="info">
                             <div>
-                                <div className="playbtn"
+                                {(track?._id !== currentTrack?._id ||
+                                    track?._id === currentTrack?._id && currentTrack?.isPlaying === false
+                                )
+                                    &&
+                                    <div
+                                        className="playbtn"
+                                        onClick={() => {
+                                            if (track && wavesurfer) {
+                                                setCurrentTrack({ ...track, isPlaying: true })
+                                                onPlayClick();
+                                                handleIncreaseView();
+                                            }
+                                        }}
+                                    >
+
+                                        <PlayArrowIcon
+                                            sx={{ fontSize: 30, color: "white" }}
+                                        />
+                                    </div>
+                                }
+                                {(track?._id === currentTrack?._id && currentTrack?.isPlaying === true) &&
+                                    <div
+                                        className="playbtn"
+                                        onClick={() => {
+                                            if (track && wavesurfer) {
+                                                // setCurrentTrack({ ...track, isPlaying: false })
+                                                setCurrentTrack({ ...track, isPlaying: false })
+                                                onPlayClick();
+                                                handleIncreaseView();
+                                            }
+                                        }}
+                                    >
+                                        <PauseIcon
+                                            sx={{ fontSize: 30, color: "white" }}
+                                        />
+                                    </div>
+                                }
+                                {/* <div className="playbtn"
                                     onClick={() => {
                                         onPlayClick();
                                         if (track && wavesurfer) {
@@ -325,7 +392,7 @@ const WaveTrack = (props: IProps) => {
                                             sx={{ fontSize: 30, color: "white" }}
                                         />
                                     }
-                                </div>
+                                </div> */}
                             </div>
                             <div className="info__container">
                                 <div className="info__container--name">

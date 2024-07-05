@@ -43,7 +43,8 @@ const SearchATrack = (props: IProps) => {
     }
 
     //CONTEXT API:
-    const { currentTrack, setCurrentTrack, wavesurferContext, setWavesurferContext } = useTrackContext() as ITrackContext;
+    const { currentTrack, setCurrentTrack, wavesurferContext,
+        setWavesurferContext, setCurrentTimeContext, currentTimeContext } = useTrackContext() as ITrackContext;
 
     const optionsMemo = useMemo((): Omit<WaveSurferOptions, 'container'> => {
         let gradient, progressGradient;
@@ -102,6 +103,13 @@ const SearchATrack = (props: IProps) => {
             wavesurfer.on('timeupdate', (currentTime) => {
                 setTime(formatTime(currentTime));
             }),
+            wavesurfer.on('seeking', (currentTime) => {
+                setIsPlaying(true);
+                wavesurfer.setMuted(true);
+                setCurrentTimeContext(currentTime);
+                if (track)
+                    setCurrentTrack({ ...track, isPlaying: true });
+            }),
             wavesurfer.once('interaction', () => {
                 wavesurfer.play()
             })
@@ -113,19 +121,19 @@ const SearchATrack = (props: IProps) => {
     }, [wavesurfer]);
 
     useEffect(() => {
-        if (wavesurfer && track?._id !== currentTrack?._id) {
+        if (wavesurfer && track && currentTrack && track._id !== currentTrack._id) {
             wavesurfer.pause();
             wavesurfer.setTime(0);
         }
-        if (wavesurfer && track?._id === currentTrack?._id && currentTrack?.isPlaying) {
+        if (wavesurfer && track && currentTrack && track._id === currentTrack._id && currentTrack.isPlaying) {
             wavesurfer.play();
         }
+
     }, [currentTrack]);
 
     // useEffect(() => {
     //     if (track?._id && !currentTrack?._id) {
     //         setCurrentTrack({ ...track, isPlaying: false })
-    //         console.log(">>> check 2");
     //     }
     // }, [track]);
 
@@ -141,6 +149,8 @@ const SearchATrack = (props: IProps) => {
         //     console.log(">>> check 2");
         // }
     }, [wavesurfer]);
+
+
 
     const handleClickOnMobile = () => {
         const tmp = isPlaying;

@@ -4,7 +4,7 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import MainSlider from "@/components/main/main.slider";
+import MainSlider from "@/components/main/components/main.slider";
 import { sendRequest } from "@/utils/api";
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "../api/auth/auth.options";
@@ -44,18 +44,21 @@ export default async function HomePage() {
 
 
   return (
-    <Container>
+    <Container sx={{ marginTop: "80px" }}>
       <MainSlider
         title={'Top Chill'}
         data={chills?.data ?? []}
+        category='CHILL'
       />
       <MainSlider
         title={'Top Workout'}
         data={workouts?.data ?? []}
+        category='WORKOUT'
       />
       <MainSlider
         title={'Top Party'}
         data={party?.data ?? []}
+        category='PARTY'
       />
     </Container>
   );

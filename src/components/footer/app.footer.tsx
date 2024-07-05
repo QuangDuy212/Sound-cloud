@@ -21,7 +21,8 @@ interface ILike {
 
 const AppFooter = () => {
     //CONTEXT API:
-    const { currentTrack, setCurrentTrack, wavesurferContext, setWavesurferContext } = useTrackContext() as ITrackContext;
+    const { currentTrack, setCurrentTrack, wavesurferContext,
+        setWavesurferContext, setCurrentTimeContext, currentTimeContext } = useTrackContext() as ITrackContext;
 
     //STATE 
     const [count, setCount] = useState(0);
@@ -29,7 +30,6 @@ const AppFooter = () => {
 
     //LIBRARY:
     const playerRef = useRef(null);
-    const miniPlayerMobileRef = useRef(null);
     const hasMounted = useHasMounted();
     let isMobile = false;
     if (typeof window !== "undefined") {
@@ -52,6 +52,16 @@ const AppFooter = () => {
             playerRef?.current?.audio?.current?.pause();
         }
     }, [currentTrack]);
+
+    //setTime when click on the wavetrack
+    useEffect(() => {
+        //@ts-ignore
+        let aud = playerRef?.current?.audio?.current;
+        if (aud) {
+            aud.currentTime = currentTimeContext;
+        }
+        //@ts-ignore
+    }, [currentTimeContext])
 
     const fetchData = async () => {
         if (session?.access_token) {
@@ -154,6 +164,7 @@ const AppFooter = () => {
                                             onPause={() => { setCurrentTrack({ ...currentTrack, isPlaying: false }), wavesurferContext?.pause() }}
                                             //@ts-ignore
                                             onSeeking={(e) => wavesurferContext?.seekTo(e?.target?.currentTime / e?.target?.duration)}
+
                                         />
                                     </Grid>
                                     <Grid item xs={2}>

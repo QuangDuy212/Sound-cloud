@@ -31,9 +31,10 @@ export const TrackContextProvider = ({ children }: { children: React.ReactNode }
     }
     const [currentTrack, setCurrentTrack] = useState<IShareTrack>(initValue);
     const [wavesurferContext, setWavesurferContext] = useState<WaveSurfer | null>(null);
+    const [currentTimeContext, setCurrentTimeContext] = useState<number>(0);
 
     return (
-        <TrackContext.Provider value={{ currentTrack, setCurrentTrack, wavesurferContext, setWavesurferContext }}>
+        <TrackContext.Provider value={{ currentTrack, setCurrentTrack, wavesurferContext, setWavesurferContext, currentTimeContext, setCurrentTimeContext }}>
             {children}
         </TrackContext.Provider>
     )
