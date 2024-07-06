@@ -14,12 +14,15 @@ const CategoryAlbum = (props: IProps) => {
                 <h2 style={{ margin: "10px 0" }}>ALBUM HOT</h2>
             </div>
             <div style={{ display: "flex", flexWrap: "wrap" }}>
-                {data?.map(item => {
+                {data?.map((item, index) => {
                     return (
-                        <Link href={`/category/${item?.categories}`} style={{
-                            color: "unset",
-                            textDecoration: "unset"
-                        }}>
+                        <Link
+                            key={index}
+                            href={`/category/${item?.categories}`}
+                            style={{
+                                color: "unset",
+                                textDecoration: "unset"
+                            }}>
                             <div style={{ marginLeft: "5px", marginTop: "5px" }}>
                                 <div>
                                     <Image

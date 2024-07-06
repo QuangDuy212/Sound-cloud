@@ -7,25 +7,22 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
-import { deepOrange, deepPurple } from '@mui/material/colors';
 import Container from '@mui/material/Container';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { fetchDefaultImages } from '@/utils/api';
 import Image from 'next/image';
 import ActiveLink from './active.link';
+import DrawerMenu from './drawer.menu';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SearchMobile from '../search/search.mobile';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -68,9 +65,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const AppHeader = () => {
+interface IProps {
+    isMobile: boolean;
+}
+
+const AppHeader = (props: IProps) => {
+    //PROPS: 
+    const { isMobile } = props;
+
     //STATE:
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [isOpenMenuMobile, setIsOpenMenuMobile] = React.useState<boolean>(false);
+    const [isOpenSearchMobile, setIsOpenSearchMobile] = React.useState<boolean>(false);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
 
@@ -191,29 +197,35 @@ const AppHeader = () => {
                     }}
                 >
                     <Container >
-                        <Toolbar>
+                        <Toolbar
+                            sx={{
+                                padding: { xs: 0 }
+                            }}
+                        >
                             <IconButton
                                 size="large"
                                 edge="start"
                                 color="inherit"
                                 aria-label="open drawer"
-                                sx={{ display: { xs: 'block', sm: 'none' } }}
+                                sx={{ display: { xs: 'block', sm: 'block', md: "none" }, }}
+                                onClick={() => setIsOpenMenuMobile(true)}
                             >
-                                <MenuIcon />
+                                <MenuIcon sx={{ height: "24px", width: "24px" }} />
                             </IconButton>
                             <Typography
                                 variant="h6"
                                 noWrap
                                 component="div"
                                 sx={{
-                                    display: { xs: 'none', sm: 'block' },
+                                    display: { xs: 'block', sm: 'block' },
                                     cursor: "pointer",
+                                    margin: { xs: "0 auto", lg: 0 }
                                 }}
                                 onClick={(e) => handleRedirectHome(e)}
                             >
                                 SOUNDCLOUD
                             </Typography>
-                            <Search>
+                            <Search sx={{ display: { xs: 'none', sm: 'none', lg: "block" }, }}>
                                 <SearchIconWrapper>
                                     <SearchIcon />
                                 </SearchIconWrapper>
@@ -229,7 +241,7 @@ const AppHeader = () => {
                                     }}
                                 />
                             </Search>
-                            <Box sx={{ flexGrow: 1 }} />
+                            <Box sx={{ flexGrow: { xs: 0, sm: 0, lg: 1 } }} />
                             <Box
                                 sx={{
                                     display: { xs: 'none', md: 'flex' },
@@ -267,7 +279,8 @@ const AppHeader = () => {
                                                 <Image
                                                     src={fetchDefaultImages(session?.user?.type)}
                                                     style={{
-                                                        cursor: "pointer"
+                                                        cursor: "pointer",
+                                                        borderRadius: "50%"
                                                     }}
                                                     alt='avatar'
                                                     width={40}
@@ -285,7 +298,7 @@ const AppHeader = () => {
 
                             </Box>
                             <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                                <IconButton
+                                {/* <IconButton
                                     size="large"
                                     aria-label="show more"
                                     aria-controls={mobileMenuId}
@@ -294,7 +307,36 @@ const AppHeader = () => {
                                     color="inherit"
                                 >
                                     <MoreIcon />
-                                </IconButton>
+                                </IconButton> */}
+                                {!isOpenSearchMobile
+                                    ?
+                                    <SearchIcon sx={{ height: "30px", width: "30px" }}
+                                        onClick={() => setIsOpenSearchMobile(true)}
+                                    />
+                                    :
+                                    <CloseIcon sx={{ height: "30px", width: "30px" }}
+                                        onClick={() => setIsOpenSearchMobile(false)}
+                                    />
+                                }
+                                {session ?
+                                    <Image
+                                        src={fetchDefaultImages(session?.user?.type)}
+                                        style={{
+                                            cursor: "pointer",
+                                            borderRadius: "50%",
+                                            marginLeft: "5px"
+                                        }}
+                                        alt='avatar'
+                                        width={30}
+                                        height={30}
+                                        onClick={() => setIsOpenMenuMobile(true)}
+                                    />
+                                    :
+                                    <AccountCircleIcon
+                                        sx={{ height: "30px", width: "30px", marginLeft: "5px" }}
+                                        onClick={() => setIsOpenMenuMobile(true)}
+                                    />
+                                }
                             </Box>
                         </Toolbar>
                     </Container>
@@ -302,6 +344,14 @@ const AppHeader = () => {
                 {renderMobileMenu}
                 {renderMenu}
             </Box>
+            <DrawerMenu
+                open={isOpenMenuMobile}
+                setOpen={setIsOpenMenuMobile}
+            />
+            <SearchMobile
+                open={isOpenSearchMobile}
+                setOpen={setIsOpenSearchMobile}
+            />
         </>
     );
 }

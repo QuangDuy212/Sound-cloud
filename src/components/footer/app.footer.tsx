@@ -19,7 +19,14 @@ interface ILike {
     d: string;
 }
 
-const AppFooter = () => {
+interface IProps {
+    isMobile: boolean;
+}
+
+const AppFooter = (props: IProps) => {
+    //PROPS: 
+    const { isMobile } = props;
+
     //CONTEXT API:
     const { currentTrack, setCurrentTrack, wavesurferContext,
         setWavesurferContext, setCurrentTimeContext, currentTimeContext } = useTrackContext() as ITrackContext;
@@ -31,10 +38,6 @@ const AppFooter = () => {
     //LIBRARY:
     const playerRef = useRef(null);
     const hasMounted = useHasMounted();
-    let isMobile = false;
-    if (typeof window !== "undefined") {
-        isMobile = window?.matchMedia("(max-width: 600px)")?.matches;// check mobile device
-    }
     const { data: session } = useSession();
     const router = useRouter();
 
