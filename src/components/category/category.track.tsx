@@ -31,7 +31,7 @@ const CategoryTrack = (props: IProps) => {
             }}>
                 {data?.map((item, index) => {
                     return (
-                        <Grid item xs={4} key={item?._id}>
+                        <Grid item xl={4} lg={4} md={6} sm={6} xs={12} key={item?._id}>
                             <Link href={`/track/${convertSlugUrl(item.title)}-${item._id}.html?audio=${item.trackUrl}`} style={{
                                 color: "unset",
                                 textDecoration: "unset"
@@ -42,7 +42,7 @@ const CategoryTrack = (props: IProps) => {
                                         marginTop: "5px",
                                         borderRadius: "10px",
                                         display: "flex",
-                                        width: "360px",
+                                        width: "100%",
                                         alignItems: "center",
                                         height: "80px",
                                         padding: "10px",
@@ -67,7 +67,7 @@ const CategoryTrack = (props: IProps) => {
                                             />
                                         }
                                     </div>
-                                    <div style={{ marginLeft: "10px", width: "200px" }}>
+                                    <div style={{ marginLeft: "10px", }}>
                                         <div style={{ fontSize: "16px", color: "#333" }}>
                                             {item?.title}
                                         </div>

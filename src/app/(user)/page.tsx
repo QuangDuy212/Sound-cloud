@@ -8,6 +8,9 @@ import MainSlider from "@/components/main/components/main.slider";
 import { sendRequest } from "@/utils/api";
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "../api/auth/auth.options";
+import { isMobileDevice } from "@/lib/responsive";
+import MainMobile from "@/components/main/components/main.mobile";
+import MainDesktop from "@/components/main/components/main.desktop";
 
 
 
@@ -42,24 +45,26 @@ export default async function HomePage() {
     },
   })
 
+  const mobile = isMobileDevice(); // execute the function
+
 
   return (
     <Container sx={{ marginTop: "80px" }}>
-      <MainSlider
-        title={'Top Chill'}
-        data={chills?.data ?? []}
-        category='CHILL'
-      />
-      <MainSlider
-        title={'Top Workout'}
-        data={workouts?.data ?? []}
-        category='WORKOUT'
-      />
-      <MainSlider
-        title={'Top Party'}
-        data={party?.data ?? []}
-        category='PARTY'
-      />
+
+      {mobile
+        ?
+        <MainMobile
+          chills={chills?.data ?? []}
+          workouts={workouts?.data ?? []}
+          party={party?.data ?? []}
+        />
+        :
+        <MainDesktop
+          chills={chills?.data ?? []}
+          workouts={workouts?.data ?? []}
+          party={party?.data ?? []}
+        />
+      }
     </Container>
   );
 }
