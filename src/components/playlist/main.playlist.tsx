@@ -13,6 +13,7 @@ import CreatePlaylist from './components/modal.create.playlist';
 import AddTracks from './components/modal.add.track';
 import { v4 as uuidv4 } from 'uuid';
 import DetailATrack from './components/detail.track';
+import { Box } from '@mui/material';
 
 
 const MainPlayList = () => {
@@ -56,32 +57,46 @@ const MainPlayList = () => {
 
     return (
         <>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+            <Box
+                sx={{
+                    display: { md: "flex", lg: "flex", xl: "flex", xs: "block", sm: "block" },
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "20px"
+                }}>
                 <div style={{}}>
                     Playlist:
                 </div>
                 <div>
                     <Button variant="outlined"
                         onClick={() => setIsOpenCreatePlaylist(true)}
+                        sx={{
+                            width: { md: "100%", sm: "100%", xs: "100%", lg: "unset" },
+
+                        }}
                     >Add Playlist</Button>
                     <Button
                         variant="outlined"
-                        sx={{ marginLeft: "20px" }}
+                        sx={{
+                            marginLeft: { sm: 0, xs: 0, lg: "20px" },
+                            width: { md: "100%", sm: "100%", xs: "100%", lg: "unset" },
+                            marginTop: { sm: "10px", xs: "10px", lg: 0 }
+
+                        }}
                         onClick={() => setAddTrack(true)}
                     >Add Tracks</Button>
                 </div>
 
-            </div>
+            </Box>
             <Divider />
             <div style={{ marginTop: "20px" }}>
                 {playlist?.map((item, index) => {
                     return (
-                        <Accordion key={uuidv4()}>
+                        <Accordion key={uuidv4()} >
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1-content"
                                 id="panel1-header"
-
                             >
                                 {item?.title}
                             </AccordionSummary>

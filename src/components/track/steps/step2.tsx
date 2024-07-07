@@ -3,7 +3,7 @@ import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgres
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useEffect, useState } from 'react';
-import { Grid } from '@mui/material';
+import { FormControl, Grid, InputLabel, Select } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -248,27 +248,25 @@ const Step2 = (props: IProps) => {
                                 description: e.target.value,
                             })}
                         />
-                        <TextField
-                            required
-                            select
-                            label="Category"
-                            // SelectProps={{
-                            //     native: true,
-                            // }}
-                            helperText="Please select category"
-                            variant="standard"
-                            value={info?.category}
-                            onChange={(e) => setInfo({
-                                ...info,
-                                category: e.target.value,
-                            })}
-                        >
-                            {categories.map((option) => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </TextField>
+
+                        <FormControl fullWidth variant="standard">
+                            <InputLabel >Category</InputLabel>
+                            <Select
+                                value={info?.category}
+                                label="Age"
+                                onChange={(e) => setInfo({
+                                    ...info,
+                                    category: e.target.value,
+                                })}
+                            >
+                                {categories?.map((option) => {
+                                    return (
+
+                                        <MenuItem value={option.value} key={option.value}>{option.label}</MenuItem>
+                                    )
+                                })}
+                            </Select>
+                        </FormControl>
 
                     </Box>
                     <Button variant="outlined" sx={{ marginLeft: "20px" }}

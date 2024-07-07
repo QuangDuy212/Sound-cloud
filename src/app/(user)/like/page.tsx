@@ -1,4 +1,5 @@
 'use client';
+import CategoryTrack from '@/components/category/category.track';
 import LikedTrack from '@/components/like/liked.track';
 import { sendRequest } from '@/utils/api';
 import { Box, Container, Divider } from '@mui/material';
@@ -52,12 +53,24 @@ const LikePage = () => {
                     Hear the tracks you’ve liked:
                 </div>
                 <Divider sx={{ margin: "20px 0" }} />
-                <Box sx={{ display: "flex", gap: "20px", flexWrap: "wrap", margin: "0 auto", padding: "10px" }} >
+                <Box
+                    sx={{
+                        display: { xs: "none", sm: "none", md: "none", lg: "flex", xl: "flex" },
+                        gap: "20px", flexWrap: "wrap", margin: "0 auto", padding: "10px"
+                    }} >
                     {likedTracks?.map((item, index) => {
                         return (
                             <LikedTrack track={item} key={item?._id} />
                         )
                     })}
+                </Box>
+                <Box
+                    sx={{
+                        display: { xs: "block", sm: "block", md: "block", lg: "none", xl: "none" },
+                    }}
+                >
+                    <CategoryTrack data={likedTracks} />
+
                 </Box>
             </Container>
         </>

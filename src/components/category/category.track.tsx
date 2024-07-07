@@ -31,7 +31,7 @@ const CategoryTrack = (props: IProps) => {
             }}>
                 {data?.map((item, index) => {
                     return (
-                        <Grid item xl={4} lg={4} md={6} sm={6} xs={12} key={item?._id}>
+                        <Grid item xl={4} lg={4} md={4} sm={6} xs={12} key={item?._id}>
                             <Link href={`/track/${convertSlugUrl(item.title)}-${item._id}.html?audio=${item.trackUrl}`} style={{
                                 color: "unset",
                                 textDecoration: "unset"

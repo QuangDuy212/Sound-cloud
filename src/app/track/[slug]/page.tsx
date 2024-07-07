@@ -5,6 +5,7 @@ import Container from '@mui/material/Container';
 import { useSearchParams } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
+import { isMobileDevice } from '@/lib/responsive';
 type Props = {
     params: { slug: string }
     searchParams: { [key: string]: string | string[] | undefined }
@@ -86,6 +87,9 @@ const DetailTrackPage = async (props: any) => {
     });
 
     // await new Promise(resolve => setTimeout(resolve, 5000));
+
+
+    const isMobile = isMobileDevice(); // execute the function
 
     if (!res?.data || !comments?.data?.result) {
         notFound();
