@@ -13,16 +13,18 @@ import Chip from '@mui/material/Chip';
 import { Theme, useTheme } from '@mui/material/styles';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
+import { handleAddTrackToUserPlaylist } from '@/utils/actions/actions';
 
 export interface SimpleDialogProps {
     open: boolean;
     setOpen: (v: boolean) => void;
     playlist: IPlayList[] | null;
+    fetchPlayList: () => void;
 }
 
 const AddTracks = (props: SimpleDialogProps) => {
     //PROPS: 
-    const { setOpen, open, playlist } = props;
+    const { setOpen, open, playlist, fetchPlayList } = props;
 
     //STATE: 
     const [errorText, setErrorText] = useState<string>("");
@@ -98,28 +100,9 @@ const AddTracks = (props: SimpleDialogProps) => {
             toast.error("please chose playlist and chose track not added!")
             return;
         }
-        const update = await sendRequest<IBackendRes<any>>({
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/playlists`,
-            method: "PATCH",
-            body: {
-                "id": chosenPlaylist._id,
-                "title": chosenPlaylist.title,
-                "isPublic": chosenPlaylist.isPublic,
-                "tracks": tracks
-            },
-            headers: {
-                Authorization: `Bearer ${session?.access_token}`,
-            }
-        })
+        const update = await handleAddTrackToUserPlaylist(chosenPlaylist, tracks)
         if (update?.statusCode === 200) {
-            await sendRequest<IBackendRes<any>>({
-                url: `/api/revalidate`,
-                method: "POST",
-                queryParams: {
-                    tag: "playlist-by-user",
-                    secret: "DuySoundCloud" // fix in api/revalidate/route to protect secret
-                }
-            });
+            fetchPlayList();
             toast.success("Add track success!");
             handleOnClose();
         }

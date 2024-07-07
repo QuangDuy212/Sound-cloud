@@ -6,15 +6,17 @@ import { sendRequest } from '@/utils/api';
 import { useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useToast } from '@/utils/toast';
+import { handleAddPlaylistEmpty } from '@/utils/actions/actions';
 
 export interface SimpleDialogProps {
     open: boolean;
     setOpen: (v: boolean) => void;
+    fetchPlayList: () => void;
 }
 
 const CreatePlaylist = (props: SimpleDialogProps) => {
     //PROPS: 
-    const { setOpen, open } = props;
+    const { setOpen, open, fetchPlayList } = props;
 
     //STATE: 
     const [title, setTitle] = useState<string>("");
@@ -33,23 +35,10 @@ const CreatePlaylist = (props: SimpleDialogProps) => {
             setErrorText("Please fill title for playlist!");
             return;
         }
-        const create = await sendRequest<IBackendRes<any>>({
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/playlists/empty`,
-            method: "POST",
-            body: { title, isPublic },
-            headers: {
-                Authorization: `Bearer ${session?.access_token}`,
-            }
-        })
+        const create = await handleAddPlaylistEmpty(title, isPublic);
+
         if (create?.data) {
-            await sendRequest<IBackendRes<any>>({
-                url: `/api/revalidate`,
-                method: "POST",
-                queryParams: {
-                    tag: "playlist-by-user",
-                    secret: "DuySoundCloud" // fix in api/revalidate/route to protect secret
-                }
-            });
+            fetchPlayList();
             toast.success(create?.message);
             handleOnClose()
         }

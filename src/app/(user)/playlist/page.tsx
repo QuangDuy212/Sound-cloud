@@ -12,7 +12,7 @@ const PlayListPage = async () => {
 
     return (
         <>
-            <Container sx={{ marginTop: "100px", borderRadius: "10px", background: "#d0dce4", padding: "20px" }}>
+            <Container sx={{ marginTop: "40px", borderRadius: "10px", padding: "20px" }}>
                 <MainPlaylist />
             </Container>
         </>

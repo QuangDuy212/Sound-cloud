@@ -109,12 +109,14 @@ const MainPlayList = () => {
             <CreatePlaylist
                 open={isOpenCreatePlaylist}
                 setOpen={setIsOpenCreatePlaylist}
+                fetchPlayList={fetchPlayList}
             />
 
             <AddTracks
                 open={addTrack}
                 setOpen={setAddTrack}
                 playlist={playlist}
+                fetchPlayList={fetchPlayList}
             />
         </>
     );

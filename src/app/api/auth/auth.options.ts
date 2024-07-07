@@ -14,8 +14,6 @@ async function refreshAccessToken(token: JWT) {
         body: { refresh_token: token?.refresh_token }
     })
     if (res?.data) {
-        console.log(">>> check old token: ", token.access_token);
-        console.log(">>>> check  new token: ", res?.data?.access_token);
         return {
             ...token,
             access_token: res?.data?.access_token ?? "",

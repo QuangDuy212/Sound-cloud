@@ -43,10 +43,10 @@ const ClientSearch = () => {
         <>
             {!tracks?.length &&
                 <div>
-                    Not found in search name SoundCloud
+                    Not found in search name
                 </div>
             }
-            {tracks?.length &&
+            {tracks && tracks.length > 0 &&
                 <>
                     <div style={{ fontSize: "24px", color: "#999" }}>
                         Result search : {query}

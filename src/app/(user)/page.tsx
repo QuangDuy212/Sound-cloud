@@ -49,7 +49,7 @@ export default async function HomePage() {
 
 
   return (
-    <Container sx={{ marginTop: "80px" }}>
+    <Container sx={{ marginTop: "40px" }}>
 
       {mobile
         ?
