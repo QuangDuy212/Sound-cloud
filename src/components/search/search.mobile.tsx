@@ -80,6 +80,8 @@ export default function SearchMobile(props: IProps) {
 
 
 
+
+
     return (
         < >
             <Dialog
@@ -127,17 +129,7 @@ export default function SearchMobile(props: IProps) {
                             </div>
                             <Divider sx={{ margin: "10px 0" }} />
                             <Box sx={{ marginTop: "10px", marginBottom: "50px" }}>
-                                {tracks?.map((item, index) => {
-                                    return (
-                                        <Fragment key={item?._id}>
-                                            <div style={{ marginBottom: "10px" }}>
-                                                <SearchATrack
-                                                    track={item}
-                                                />
-                                            </div>
-                                        </Fragment>
-                                    )
-                                })}
+                                <SearchATrack data={tracks} />
                             </Box>
                         </div>
 

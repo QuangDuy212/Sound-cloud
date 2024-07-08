@@ -6,7 +6,7 @@ const SearchPage = () => {
 
     return (
         <>
-            <Container sx={{ marginTop: "100px" }}>
+            <Container sx={{ marginTop: "40px" }}>
                 <ClientSearch />
             </Container>
         </>

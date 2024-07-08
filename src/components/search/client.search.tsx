@@ -42,7 +42,7 @@ const ClientSearch = () => {
     return (
         <>
             {!tracks?.length &&
-                <div>
+                <div style={{ fontSize: "16px", color: "#999" }}>
                     Not found in search name
                 </div>
             }
@@ -53,15 +53,7 @@ const ClientSearch = () => {
                     </div>
                     <Divider sx={{ margin: "10px 0" }} />
                     <Box sx={{ marginTop: "10px" }}>
-                        {tracks?.map((item, index) => {
-                            return (
-                                <Fragment key={item?._id}>
-                                    <SearchATrack
-                                        track={item}
-                                    />
-                                </Fragment>
-                            )
-                        })}
+                        <SearchATrack data={tracks} />
                     </Box>
                 </>
 

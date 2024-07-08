@@ -48,7 +48,7 @@ const LikePage = () => {
 
     return (
         <>
-            <Container sx={{ marginTop: "100px" }}>
+            <Container sx={{ marginTop: "40px" }}>
                 <div style={{ fontSize: "18px", color: "#999999" }}>
                     Hear the tracks you’ve liked:
                 </div>

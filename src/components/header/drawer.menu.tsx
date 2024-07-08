@@ -85,7 +85,9 @@ const DrawerMenu = (props: IProps) => {
                             width={60}
                             height={60}
                         />
-                        <span style={{ marginLeft: "12px", fontSize: "16px", fontWeight: 600 }}>{TextAbstract(session?.user?.username, 22)}</span>
+                        <span style={{ marginLeft: "12px", fontSize: "16px", fontWeight: 600 }}>
+                            {session?.user?.username ? TextAbstract(session?.user?.username, 22) : "Người ẩn danh"}
+                        </span>
                     </div>
                 }
             </div>

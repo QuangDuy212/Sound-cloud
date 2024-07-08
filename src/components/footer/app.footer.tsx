@@ -25,7 +25,7 @@ interface IProps {
 
 const AppFooter = (props: IProps) => {
     //PROPS: 
-    const { isMobile } = props;
+    // const { isMobile } = props;
 
     //CONTEXT API:
     const { currentTrack, setCurrentTrack, wavesurferContext,
@@ -40,6 +40,11 @@ const AppFooter = (props: IProps) => {
     const hasMounted = useHasMounted();
     const { data: session } = useSession();
     const router = useRouter();
+
+    let isMobile = false;
+    if (typeof window !== "undefined") {
+        isMobile = window?.matchMedia("(max-width: 600px)")?.matches;// check mobile device
+    }
 
     //METHODS: 
     useEffect(() => {
@@ -164,10 +169,9 @@ const AppFooter = (props: IProps) => {
                                             }}
                                             layout="horizontal-reverse"
                                             onPlay={() => { setCurrentTrack({ ...currentTrack, isPlaying: true }) }}
-                                            onPause={() => { setCurrentTrack({ ...currentTrack, isPlaying: false }), wavesurferContext?.pause() }}
+                                            onPause={() => { setCurrentTrack({ ...currentTrack, isPlaying: false }); wavesurferContext?.pause(); }}
                                             //@ts-ignore
                                             onSeeking={(e) => wavesurferContext?.seekTo(e?.target?.currentTime / e?.target?.duration)}
-
                                         />
                                     </Grid>
                                     <Grid item xs={2}>

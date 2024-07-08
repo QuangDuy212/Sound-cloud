@@ -1,13 +1,8 @@
 'use client'
 
 import Image from "next/image";
-import { useTheme } from '@mui/material/styles';
-import { useRouter } from 'next/navigation'
 import { convertSlugUrl } from "@/utils/api";
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import { redirect } from 'next/navigation'
 import Link from "next/link";
 
 interface IProps {
@@ -16,9 +11,6 @@ interface IProps {
 const CategoryTrack = (props: IProps) => {
     //PROPS: 
     const { data } = props;
-
-    const theme = useTheme();
-    const router = useRouter();
 
     //METHODS: 
 
