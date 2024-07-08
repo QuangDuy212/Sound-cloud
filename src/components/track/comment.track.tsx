@@ -70,6 +70,7 @@ const CommentTrack = (props: IProps) => {
             wavesurfer.play();
         }
     }
+
     return (
         <>
 

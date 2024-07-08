@@ -7,6 +7,7 @@ interface IProps {
     chills: ITrackTop[] | null;
     workouts: ITrackTop[] | null;
     party: ITrackTop[] | null;
+    liked: ITrackTop[] | null;
 }
 
 const MainMobile = (props: IProps) => {

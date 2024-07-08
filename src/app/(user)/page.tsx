@@ -44,6 +44,20 @@ export default async function HomePage() {
       limit: 10,
     },
   })
+  const res = await sendRequest<IBackendRes<IModelPaginate<ITrackTop>>>({
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
+    method: "GET",
+    queryParams: {
+      current: 1,
+      pageSize: 100
+    },
+    headers: {
+      Authorization: `Bearer ${session?.access_token}`,
+    },
+    nextOption: {
+      next: { tags: ['liked-by-user'] }
+    }
+  })
 
   const mobile = isMobileDevice(); // execute the function
 
@@ -57,12 +71,14 @@ export default async function HomePage() {
           chills={chills?.data ?? []}
           workouts={workouts?.data ?? []}
           party={party?.data ?? []}
+          liked={res?.data?.result ?? []}
         />
         :
         <MainDesktop
           chills={chills?.data ?? []}
           workouts={workouts?.data ?? []}
           party={party?.data ?? []}
+          liked={res?.data?.result ?? []}
         />
       }
     </Container>
