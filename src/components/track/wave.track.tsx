@@ -127,11 +127,6 @@ const WaveTrack = (props: IProps) => {
         }
     }, [wavesurfer]);
 
-    // useEffect(() => {
-    //     if (wavesurfer && currentTrack.isPlaying) {
-    //         wavesurfer.pause();
-    //     }
-    // }, [currentTrack]);
 
     useEffect(() => {
         // if (wavesurfer && track?._id !== currentTrack?._id) {
@@ -150,25 +145,12 @@ const WaveTrack = (props: IProps) => {
     }, [track]);
 
     // On play button click
-    // const onPlayClick = useCallback(() => {
-    //     if (wavesurfer) {
-    //         wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
-    //         console.log(">>>> check currentTrack : ", currentTrack);
-    //         console.log(">>>> check track: ", track);
-    //     }
-
-    // }, [wavesurfer]);
-
     const onPlayClick = useCallback(() => {
         if (wavesurfer) {
             wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
             setWavesurferContext(wavesurfer);
             wavesurfer.setMuted(true)
         }
-        // if (track?._id && !currentTrack?._id) {
-        //     setCurrentTrack({ ...track, isPlaying: false })
-        //     console.log(">>> check 2");
-        // }
     }, [wavesurfer]);
 
     const handleClickOnMobile = () => {
@@ -236,129 +218,49 @@ const WaveTrack = (props: IProps) => {
     // render
     return (
         <>
-            {mounted &&
-                <div style={{ marginTop: 64 }} className="track">
-                    {isMobile
-                        ?
-                        <div>
-                            <div style={{ width: "100%" }}>
-                                {track?.imgUrl && mounted &&
-                                    <Image
-                                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`}
-                                        alt="image track"
-                                        width={300}
-                                        height={300}
-                                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                                    />
-                                }
-                            </div>
-                            <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                <div>
-                                    <div style={{ fontSize: "22px", fontWeight: "700", margin: 0 }}>
-                                        {track?.title}
-                                    </div>
-                                    <div style={{ fontSize: "22px", fontWeight: "700", margin: 0, color: "#666666" }}>
-                                        {track?.description}
-                                    </div>
-                                </div>
-                                <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                    <div className="playbtn"
-                                        style={{ height: "64px", width: "64px" }}
+            <div style={{ marginTop: 64 }} className="track">
+                <div className="track-container" >
+                    <div className="left">
+                        <div className="info">
+                            <div>
+                                {(track?._id !== currentTrack?._id ||
+                                    track?._id === currentTrack?._id && currentTrack?.isPlaying === false
+                                )
+                                    &&
+                                    <div
+                                        className="playbtn"
                                         onClick={() => {
-                                            if (track) {
+                                            if (track && wavesurfer) {
+                                                setCurrentTrack({ ...track, isPlaying: true })
+                                                onPlayClick();
                                                 handleIncreaseView();
-                                                handleClickOnMobile();
                                             }
                                         }}
-
                                     >
-                                        {currentTrack?.isPlaying === true && track?._id === currentTrack?._id
-                                            ?
-                                            <PauseIcon
-                                                sx={{ fontSize: 30, color: "white" }}
-                                            />
-                                            :
-                                            <PlayArrowIcon
-                                                sx={{ fontSize: 30, color: "white" }}
-                                            />
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <div>
-                                    <div className='count-play'
-                                        style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            width: "100%",
-                                            color: "#777474"
-                                        }}>
-                                        <div style={{ display: "flex", alignItems: "center", fontSize: "13px", }}
-                                        >
-                                            <PlayArrowIcon style={{ height: "14px", width: "14px" }} />{formatNumber(track?.countPlay)}
-                                        </div>
-                                        <div style={{ fontSize: "13px", display: "flex", alignItems: "center", color: "#666666" }}
-                                            className="info-track-mobile"
-                                        >
-                                            <div >
-                                                {duration}
-                                            </div>
-                                        </div>
-                                        <div style={{ fontSize: "13px", display: "flex", alignItems: "center", color: "#666666" }}
-                                            className="info-track-mobile"
-                                        >
-                                            <div>
-                                                {dayjs(track?.updatedAt).format('MMM DD,YYYY')}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        :
-                        <div className="track-container" >
-                            <div className="left">
-                                <div className="info">
-                                    <div>
-                                        {(track?._id !== currentTrack?._id ||
-                                            track?._id === currentTrack?._id && currentTrack?.isPlaying === false
-                                        )
-                                            &&
-                                            <div
-                                                className="playbtn"
-                                                onClick={() => {
-                                                    if (track && wavesurfer) {
-                                                        setCurrentTrack({ ...track, isPlaying: true })
-                                                        onPlayClick();
-                                                        handleIncreaseView();
-                                                    }
-                                                }}
-                                            >
 
-                                                <PlayArrowIcon
-                                                    sx={{ fontSize: 30, color: "white" }}
-                                                />
-                                            </div>
-                                        }
-                                        {(track?._id === currentTrack?._id && currentTrack?.isPlaying === true) &&
-                                            <div
-                                                className="playbtn"
-                                                onClick={() => {
-                                                    if (track && wavesurfer) {
-                                                        // setCurrentTrack({ ...track, isPlaying: false })
-                                                        setCurrentTrack({ ...track, isPlaying: false })
-                                                        onPlayClick();
-                                                        handleIncreaseView();
-                                                    }
-                                                }}
-                                            >
-                                                <PauseIcon
-                                                    sx={{ fontSize: 30, color: "white" }}
-                                                />
-                                            </div>
-                                        }
-                                        {/* <div className="playbtn"
+                                        <PlayArrowIcon
+                                            sx={{ fontSize: 30, color: "white" }}
+                                        />
+                                    </div>
+                                }
+                                {(track?._id === currentTrack?._id && currentTrack?.isPlaying === true) &&
+                                    <div
+                                        className="playbtn"
+                                        onClick={() => {
+                                            if (track && wavesurfer) {
+                                                // setCurrentTrack({ ...track, isPlaying: false })
+                                                setCurrentTrack({ ...track, isPlaying: false })
+                                                onPlayClick();
+                                                handleIncreaseView();
+                                            }
+                                        }}
+                                    >
+                                        <PauseIcon
+                                            sx={{ fontSize: 30, color: "white" }}
+                                        />
+                                    </div>
+                                }
+                                {/* <div className="playbtn"
                                     onClick={() => {
                                         onPlayClick();
                                         if (track && wavesurfer) {
@@ -377,91 +279,88 @@ const WaveTrack = (props: IProps) => {
                                         />
                                     }
                                 </div> */}
-                                    </div>
-                                    <div className="info__container">
-                                        <div className="info__container--name">
-                                            {track?.title}
-                                        </div>
-                                        <div className="info__container--author"
-                                        >
-                                            {track?.description}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div ref={containerRef} className="wave-form-container">
-                                    <div className="time" >{time}</div>
-                                    <div className="duration" >{duration}</div>
-                                    <div ref={hoverRef} className="hover-wave"></div>
-                                    <div className="overlay"
-                                        style={{
-                                            position: "absolute",
-                                            height: "30px",
-                                            width: "100%",
-                                            bottom: "0",
-                                            // background: "#ccc"
-                                            backdropFilter: "brightness(0.5)"
-                                        }}
-                                    ></div>
-                                    <div className="comments" style={{ position: "relative" }}>
-                                        {comments?.map((item, index) => {
-                                            return (
-                                                <Tooltip title={item.content} arrow key={item._id}>
-
-                                                    <Image
-                                                        onPointerMove={(e) => {
-                                                            const hover = hoverRef.current!;
-                                                            hover.style.width = calLeft(item.moment + 3);
-                                                        }}
-                                                        src={fetchDefaultImages(item?.user?.type)}
-                                                        key={item._id}
-                                                        width={20}
-                                                        height={20}
-                                                        style={{
-                                                            position: "relative",
-                                                            top: 96,
-                                                            zIndex: 20,
-                                                            left: calLeft(item.moment)
-                                                        }}
-                                                        alt="avatar comment"
-                                                    />
-                                                </Tooltip>
-                                            )
-                                        })}
-
-                                    </div>
-                                </div>
                             </div>
-                            <div className="right"
-                            >
-                                <div className="right__content">
-                                    {track?.imgUrl &&
-                                        <Image
-                                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`}
-                                            alt="image track"
-                                            width={300}
-                                            height={300}
-                                        />
-                                    }
+                            <div className="info__container">
+                                <div className="info__container--name">
+                                    {track?.title}
+                                </div>
+                                <div className="info__container--author"
+                                >
+                                    {track?.description}
                                 </div>
                             </div>
                         </div>
-                    }
+                        <div ref={containerRef} className="wave-form-container">
+                            <div className="time" >{time}</div>
+                            <div className="duration" >{duration}</div>
+                            <div ref={hoverRef} className="hover-wave"></div>
+                            <div className="overlay"
+                                style={{
+                                    position: "absolute",
+                                    height: "30px",
+                                    width: "100%",
+                                    bottom: "0",
+                                    // background: "#ccc"
+                                    backdropFilter: "brightness(0.5)"
+                                }}
+                            ></div>
+                            <div className="comments" style={{ position: "relative" }}>
+                                {comments?.map((item, index) => {
+                                    return (
+                                        <Tooltip title={item.content} arrow key={item._id}>
 
-                    <div className="like-track" style={{ marginTop: "20px" }}>
-                        <LikeTrack
-                            track={track}
-                            countComments={countComments}
-                        />
+                                            <Image
+                                                onPointerMove={(e) => {
+                                                    const hover = hoverRef.current!;
+                                                    hover.style.width = calLeft(item.moment + 3);
+                                                }}
+                                                src={fetchDefaultImages(item?.user?.type)}
+                                                key={item._id}
+                                                width={20}
+                                                height={20}
+                                                style={{
+                                                    position: "relative",
+                                                    top: 96,
+                                                    zIndex: 20,
+                                                    left: calLeft(item.moment)
+                                                }}
+                                                alt="avatar comment"
+                                            />
+                                        </Tooltip>
+                                    )
+                                })}
+
+                            </div>
+                        </div>
                     </div>
-                    <div className="comment" style={{ marginTop: "10px" }}>
-                        <CommentTrack
-                            track={track}
-                            comments={comments}
-                            wavesurfer={wavesurfer}
-                        />
+                    <div className="right"
+                    >
+                        <div className="right__content">
+                            {track?.imgUrl &&
+                                <Image
+                                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`}
+                                    alt="image track"
+                                    width={300}
+                                    height={300}
+                                />
+                            }
+                        </div>
                     </div>
-                </div >
-            }
+                </div>
+                <div className="like-track" style={{ marginTop: "20px" }}>
+                    <LikeTrack
+                        track={track}
+                        countComments={countComments}
+                    />
+                </div>
+                <div className="comment" style={{ marginTop: "10px" }}>
+                    <CommentTrack
+                        track={track}
+                        comments={comments}
+                        wavesurfer={wavesurfer}
+                    />
+                </div>
+            </div >
         </>
     )
 }

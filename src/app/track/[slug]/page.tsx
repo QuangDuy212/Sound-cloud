@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
 import { isMobileDevice } from '@/lib/responsive';
+import WaveTrackMobile from '@/components/track/wave.track.mobile';
 type Props = {
     params: { slug: string }
     searchParams: { [key: string]: string | string[] | undefined }
@@ -97,13 +98,20 @@ const DetailTrackPage = async (props: any) => {
 
     return (
         <Container>
-            <div>
+            {isMobile
+                ?
+                <WaveTrackMobile
+                    track={res?.data ?? null}
+                    comments={comments?.data?.result ?? null}
+                    countComments={comments?.data?.meta?.total}
+                />
+                :
                 <WaveTrack
                     track={res?.data ?? null}
                     comments={comments?.data?.result ?? null}
                     countComments={comments?.data?.meta?.total}
                 />
-            </div>
+            }
         </Container>
     )
 }
